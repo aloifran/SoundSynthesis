@@ -6,7 +6,8 @@ interface OscProps {
     // an oscillator ref passed as a prop from App
     oscillatorRef: React.MutableRefObject<Tone.Oscillator>;
     type: Tone.ToneOscillatorType;
-    partials?: boolean;
+    showPartials?: boolean;
+    showFrequency?: boolean;
 }
 
 export function Oscillator(props: OscProps) {
@@ -55,16 +56,21 @@ export function Oscillator(props: OscProps) {
                 labelPlacement="start"
                 control={<Switch onChange={toggle} />}
             />
-            <p>Frequency: {frequency} Hz</p>
-            <Slider
-                size="small"
-                min={100}
-                max={1000}
-                value={frequency}
-                onChange={(e, value) => setFrequency(value as number)}
-            />
 
-            {props.partials && (
+            {props.showFrequency && (
+                <>
+                    <p>Frequency: {frequency} Hz</p>
+                    <Slider
+                        size="small"
+                        min={100}
+                        max={1000}
+                        value={frequency}
+                        onChange={(e, value) => setFrequency(value as number)}
+                    />
+                </>
+            )}
+
+            {props.showPartials && (
                 <>
                     <p>Partials/Harmonics</p>
                     <Button onClick={removePartial}>-</Button>

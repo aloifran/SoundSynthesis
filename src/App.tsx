@@ -23,7 +23,7 @@ function App() {
                     that you can hear.
                 </p>
 
-                <p>Types of waveforms are:</p>
+                <p>Types of waveforms:</p>
                 <h3>Sine</h3>
                 <img src="sine_wave.jpg" />
                 <Player type="sine" />
@@ -40,18 +40,38 @@ function App() {
                 <img src="square_wave.jpg" />
                 <Player type="square" />
 
-                <h2>Harmonic</h2>
+                <h2>Harmonics</h2>
                 <p>
                     Harmonics are vibrations that make soundwaves different from
                     one another. The timbre.
                 </p>
-                <Player type="sine" partials />
+                <Player showPartials />
 
                 <h2>Filter</h2>
                 <p>
                     A filter reshapes the harmonic content that comes from the
-                    oscillator.
+                    oscillator. It shapes the timbre/color of a tone by removing
+                    or changing harmonics from it.
                 </p>
+                <p>Types of filters:</p>
+                <h3>Low pass</h3>
+                <p>
+                    The low pass filter removes high frequencies. Makes the
+                    sound darker and warmer
+                </p>
+                <Player showFrequency={false} />
+                <h3>High pass</h3>
+                <p>
+                    The high pass filter removes low frequencies. Makes the
+                    sound brighter and more brilliant
+                </p>
+                <Player showFrequency={false} />
+                <h3>Band pass</h3>
+                <p>
+                    The band pass filter is a combination of high and low
+                    filters. Makes the sound punchy.
+                </p>
+                <Player showFrequency={false} />
 
                 <h2>Amplitude</h2>
                 <p>It's the volume</p>
