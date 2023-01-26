@@ -1,5 +1,5 @@
 import "./App.css";
-import { Player } from "../Player/Player";
+import { Player } from "./components/Player/Player";
 
 function App() {
     return (
@@ -25,15 +25,19 @@ function App() {
 
                 <p>Types of waveforms are:</p>
                 <h3>Sine</h3>
+                <img src="sine_wave.jpg" />
                 <Player type="sine" />
 
                 <h3>Triangle</h3>
+                <img src="triangle_wave.jpg" />
                 <Player type="triangle" />
 
                 <h3>Sawtooth</h3>
+                <img src="saw_wave.jpg" />
                 <Player type="sawtooth" />
 
                 <h3>Square</h3>
+                <img src="square_wave.jpg" />
                 <Player type="square" />
 
                 <h2>Harmonic</h2>
@@ -41,6 +45,7 @@ function App() {
                     Harmonics are vibrations that make soundwaves different from
                     one another. The timbre.
                 </p>
+                <Player type="sine" partials />
 
                 <h2>Filter</h2>
                 <p>
