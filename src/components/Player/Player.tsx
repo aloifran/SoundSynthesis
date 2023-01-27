@@ -3,47 +3,76 @@ import { useState, useEffect, useRef } from "react";
 import { Container } from "@mui/material";
 import { Oscillator } from "../Oscillator/Oscillator";
 
-//* This comp has: oscillator and visualizer
-//* Oscillator is the only sound source, so it's created here
+//* This comp creates the source and visualizer
 
 interface PlayerProps {
-    type?: Tone.ToneOscillatorType;
+    oscillatorType?: Tone.ToneOscillatorType;
+    filter?: boolean;
+    filterType?: BiquadFilterType;
     showFrequency?: boolean;
     showPartials?: boolean;
 }
 
 export function Player(props: PlayerProps) {
-    const osc = useRef<Tone.Oscillator>(new Tone.Oscillator().toDestination());
+    const osc = new Tone.Oscillator().toDestination();
+    const oscRef = useRef<Tone.Oscillator>(osc);
 
-    const [type, setType] = useState<Tone.ToneOscillatorType>("sine");
+    // filter is connected to the osc, so no need for a new component, the osc will be sent
+    //! how to change filter props when it's connected to osc?
+    const filt = new Tone.Filter().toDestination();
+    const oscFiltRef = useRef<Tone.Oscillator>(osc.connect(filt));
+
+    const [oscType, setType] = useState<Tone.ToneOscillatorType>("sine");
+    const [filterType, setFilterType] = useState<BiquadFilterType>("allpass");
+    const [filter, setFilter] = useState<boolean>(false);
     const [showFrequency, setShowFrequency] = useState<boolean>(true);
     const [showPartials, setShowPartials] = useState<boolean>(false);
 
     // set default values to props cause they are optional.
-    // If not provided use the default values, if provided use the values from props
+    // If provided use the values from props, else use the default values
     useEffect(() => {
-        if (props.type) {
-            setType(props.type);
+        if (props.filter) {
+            setFilter(true);
         }
-
+        if (props.oscillatorType) {
+            setType(props.oscillatorType);
+        }
+        if (props.filterType) {
+            setFilterType(props.filterType);
+        }
         if (props.showFrequency === false) {
             setShowFrequency(false);
         }
-
         if (props.showPartials) {
             setShowPartials(true);
         }
-    });
+    }, []);
 
     return (
-        <Container maxWidth="sm">
-            {/* waveform visuals here */}
-            <Oscillator
-                oscillatorRef={osc}
-                type={type}
-                showPartials={showPartials}
-                showFrequency={showFrequency}
-            />
-        </Container>
+        <>
+            {props.filter ? (
+                //! osc with filter
+                <Container maxWidth="sm">
+                    {/* waveform visuals here */}
+                    <Oscillator
+                        oscillatorRef={oscRef}
+                        oscillatorType={oscType}
+                        filterType={filterType}
+                        showFrequency={showFrequency}
+                    />
+                </Container>
+            ) : (
+                //! basic osc
+                <Container maxWidth="sm">
+                    {/* waveform visuals here */}
+                    <Oscillator
+                        oscillatorRef={oscRef}
+                        oscillatorType={oscType}
+                        showPartials={showPartials}
+                        showFrequency={showFrequency}
+                    />
+                </Container>
+            )}
+        </>
     );
 }

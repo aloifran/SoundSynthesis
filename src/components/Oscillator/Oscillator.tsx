@@ -5,16 +5,21 @@ import { Slider, Switch, FormControlLabel, Button } from "@mui/material";
 interface OscProps {
     // an oscillator ref passed as a prop from App
     oscillatorRef: React.MutableRefObject<Tone.Oscillator>;
-    type: Tone.ToneOscillatorType;
+    oscillatorType: Tone.ToneOscillatorType;
+    filterType?: BiquadFilterType;
     showPartials?: boolean;
     showFrequency?: boolean;
 }
 
 export function Oscillator(props: OscProps) {
     const osc = props.oscillatorRef.current;
-    osc.type = props.type;
+    osc.type = props.oscillatorType;
+    // const filt = new Tone.Filter("1000", props.filterType).toDestination();
+    // osc.connect(filt);
+    // console.log("FILTER", filt);
 
     const [frequency, setFrequency] = useState<number>(440);
+    const [filterFreq, setFilterFreq] = useState<number>(1000);
     const [partialsCount, setPartialsCount] = useState<number>(0);
     // const [amplitude, setAmplitude] = useState<number>(0.5);
 
@@ -24,9 +29,14 @@ export function Oscillator(props: OscProps) {
         osc.frequency.value = frequency;
     }, [partialsCount, frequency]);
 
+    // useEffect(() => {
+    //     filt.frequency.value = filterFreq;
+    //     console.log("FILTER FREQ", filt.frequency);
+    // }, [filterFreq]);
+
     const toggle = () => {
         osc.state === "stopped" ? osc.start() : osc.stop();
-        console.log(osc.state);
+        console.log("state:", osc.state, "| freq:", osc.frequency.value);
     };
 
     // const setOscAmp = (e: Event, value: number) => {
@@ -38,14 +48,14 @@ export function Oscillator(props: OscProps) {
     const addPartial = () => {
         if (partialsCount >= 0 && partialsCount < 10) {
             setPartialsCount(partialsCount + 1);
-            console.log("ADD PARTIAL");
+            console.log("ADDED PARTIAL");
         }
     };
 
     const removePartial = () => {
         if (partialsCount > 0) {
             setPartialsCount(partialsCount - 1);
-            console.log("REMOVE PARTIAL");
+            console.log("REMOVED PARTIAL");
         }
     };
 
@@ -66,6 +76,20 @@ export function Oscillator(props: OscProps) {
                         max={1000}
                         value={frequency}
                         onChange={(e, value) => setFrequency(value as number)}
+                    />
+                </>
+            )}
+
+            {/* FILTER FREQUENCY */}
+            {props.filterType && (
+                <>
+                    <p>Filter frequency: {filterFreq} Hz</p>
+                    <Slider
+                        size="small"
+                        min={0}
+                        max={2000}
+                        value={filterFreq}
+                        onChange={(e, value) => setFilterFreq(value as number)}
                     />
                 </>
             )}

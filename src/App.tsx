@@ -26,19 +26,19 @@ function App() {
                 <p>Types of waveforms:</p>
                 <h3>Sine</h3>
                 <img src="sine_wave.jpg" />
-                <Player type="sine" />
+                <Player oscillatorType="sine" />
 
                 <h3>Triangle</h3>
                 <img src="triangle_wave.jpg" />
-                <Player type="triangle" />
+                <Player oscillatorType="triangle" />
 
                 <h3>Sawtooth</h3>
                 <img src="saw_wave.jpg" />
-                <Player type="sawtooth" />
+                <Player oscillatorType="sawtooth" />
 
                 <h3>Square</h3>
                 <img src="square_wave.jpg" />
-                <Player type="square" />
+                <Player oscillatorType="square" />
 
                 <h2>Harmonics</h2>
                 <p>
@@ -59,19 +59,19 @@ function App() {
                     The low pass filter removes high frequencies. Makes the
                     sound darker and warmer
                 </p>
-                <Player showFrequency={false} />
+                {/* <Player filter filterType="highpass" showFrequency={false} /> */}
                 <h3>High pass</h3>
                 <p>
                     The high pass filter removes low frequencies. Makes the
                     sound brighter and more brilliant
                 </p>
-                <Player showFrequency={false} />
+                {/* <Player filter filterType="bandpass" showFrequency={false} /> */}
                 <h3>Band pass</h3>
                 <p>
                     The band pass filter is a combination of high and low
                     filters. Makes the sound punchy.
                 </p>
-                <Player showFrequency={false} />
+                {/* <Player filter filterType="bandpass" /> */}
 
                 <h2>Amplitude</h2>
                 <p>It's the volume</p>
