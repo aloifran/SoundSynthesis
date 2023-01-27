@@ -1,61 +1,57 @@
 import * as Tone from "tone";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Slider, Switch, FormControlLabel, Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 interface OscProps {
     // an oscillator ref passed as a prop from App
     oscillatorRef: React.MutableRefObject<Tone.Oscillator>;
-    oscillatorType: Tone.ToneOscillatorType;
     filterType?: BiquadFilterType;
     showPartials?: boolean;
     showFrequency?: boolean;
 }
 
 export function Oscillator(props: OscProps) {
+    // useRef to track values instead of useState, so they don't trigger a re-render
     const osc = props.oscillatorRef.current;
-    osc.type = props.oscillatorType;
+    let oscFrequency = useRef(440).current;
+    let oscPartialsCount = useRef(0).current;
     // const filt = new Tone.Filter("1000", props.filterType).toDestination();
     // osc.connect(filt);
-    // console.log("FILTER", filt);
 
-    const [frequency, setFrequency] = useState<number>(440);
-    const [filterFreq, setFilterFreq] = useState<number>(1000);
+    console.log("RENDER", "PARTIALS:", oscPartialsCount);
+
+    //! State is only used to trigger a re-render for the comps that need re render, like slider and count
+    //! Why it works for slider and not for partials count?
+    const [sliderFreq, setSliderFreq] = useState<number>(oscFrequency);
     const [partialsCount, setPartialsCount] = useState<number>(0);
-    // const [amplitude, setAmplitude] = useState<number>(0.5);
-
-    useEffect(() => {
-        // Set values from state to osc ref
-        osc.partialCount = partialsCount;
-        osc.frequency.value = frequency;
-    }, [partialsCount, frequency]);
-
-    // useEffect(() => {
-    //     filt.frequency.value = filterFreq;
-    //     console.log("FILTER FREQ", filt.frequency);
-    // }, [filterFreq]);
+    // const [filterFreq, setFilterFreq] = useState<number>(1000);
 
     const toggle = () => {
         osc.state === "stopped" ? osc.start() : osc.stop();
         console.log("state:", osc.state, "| freq:", osc.frequency.value);
     };
 
-    // const setOscAmp = (e: Event, value: number) => {
-    //     setAmplitude(value);
-    //     // how to change amplitude?
-    //     // osc.frequency.value = frequency;
-    // };
+    const updateOscFreq = (e: Event, value: number) => {
+        oscFrequency = value;
+        osc.frequency.value = oscFrequency;
+        setSliderFreq(oscFrequency);
+    };
 
     const addPartial = () => {
-        if (partialsCount >= 0 && partialsCount < 10) {
-            setPartialsCount(partialsCount + 1);
-            console.log("ADDED PARTIAL");
+        if (osc.partialCount >= 0 && osc.partialCount < 10) {
+            osc.partialCount++;
+            setPartialsCount(osc.partialCount);
+            console.log("ADDED PARTIAL TO OSC");
         }
     };
 
     const removePartial = () => {
-        if (partialsCount > 0) {
-            setPartialsCount(partialsCount - 1);
-            console.log("REMOVED PARTIAL");
+        if (osc.partialCount > 0) {
+            osc.partialCount--;
+            setPartialsCount(osc.partialCount);
+            console.log("REMOVED PARTIAL FROM OSC");
         }
     };
 
@@ -67,21 +63,24 @@ export function Oscillator(props: OscProps) {
                 control={<Switch onChange={toggle} />}
             />
 
+            {/* OSC FREQUENCY */}
             {props.showFrequency && (
                 <>
-                    <p>Frequency: {frequency} Hz</p>
+                    <p>Frequency: {sliderFreq} Hz</p>
                     <Slider
                         size="small"
-                        min={100}
-                        max={1000}
-                        value={frequency}
-                        onChange={(e, value) => setFrequency(value as number)}
+                        min={15}
+                        max={1500}
+                        onChange={(e, value) =>
+                            updateOscFreq(e, value as number)
+                        }
+                        value={sliderFreq}
                     />
                 </>
             )}
 
             {/* FILTER FREQUENCY */}
-            {props.filterType && (
+            {/* {props.filterType && (
                 <>
                     <p>Filter frequency: {filterFreq} Hz</p>
                     <Slider
@@ -92,14 +91,17 @@ export function Oscillator(props: OscProps) {
                         onChange={(e, value) => setFilterFreq(value as number)}
                     />
                 </>
-            )}
+            )} */}
 
             {props.showPartials && (
                 <>
                     <p>Partials/Harmonics</p>
-                    <Button onClick={removePartial}>-</Button>
-                    <Button onClick={addPartial}>+</Button>
-                    {/* <p>Partials count: {osc.partialCount}</p> */}
+                    <Button variant="outlined" onClick={removePartial}>
+                        <RemoveIcon />
+                    </Button>
+                    <Button variant="outlined" onClick={addPartial}>
+                        <AddIcon />
+                    </Button>
                     <p>Partials count: {partialsCount}</p>
 
                     {/* <p>Amplitude:</p>

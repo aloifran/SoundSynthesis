@@ -14,7 +14,10 @@ interface PlayerProps {
 }
 
 export function Player(props: PlayerProps) {
-    const osc = new Tone.Oscillator().toDestination();
+    const osc = new Tone.Oscillator(
+        "440",
+        props.oscillatorType
+    ).toDestination();
     const oscRef = useRef<Tone.Oscillator>(osc);
 
     // filter is connected to the osc, so no need for a new component, the osc will be sent
@@ -22,7 +25,6 @@ export function Player(props: PlayerProps) {
     const filt = new Tone.Filter().toDestination();
     const oscFiltRef = useRef<Tone.Oscillator>(osc.connect(filt));
 
-    const [oscType, setType] = useState<Tone.ToneOscillatorType>("sine");
     const [filterType, setFilterType] = useState<BiquadFilterType>("allpass");
     const [filter, setFilter] = useState<boolean>(false);
     const [showFrequency, setShowFrequency] = useState<boolean>(true);
@@ -33,9 +35,6 @@ export function Player(props: PlayerProps) {
     useEffect(() => {
         if (props.filter) {
             setFilter(true);
-        }
-        if (props.oscillatorType) {
-            setType(props.oscillatorType);
         }
         if (props.filterType) {
             setFilterType(props.filterType);
@@ -51,23 +50,21 @@ export function Player(props: PlayerProps) {
     return (
         <>
             {props.filter ? (
-                //! osc with filter
+                // osc with filter
                 <Container maxWidth="sm">
                     {/* waveform visuals here */}
                     <Oscillator
                         oscillatorRef={oscRef}
-                        oscillatorType={oscType}
                         filterType={filterType}
                         showFrequency={showFrequency}
                     />
                 </Container>
             ) : (
-                //! basic osc
+                // basic osc
                 <Container maxWidth="sm">
                     {/* waveform visuals here */}
                     <Oscillator
                         oscillatorRef={oscRef}
-                        oscillatorType={oscType}
                         showPartials={showPartials}
                         showFrequency={showFrequency}
                     />
