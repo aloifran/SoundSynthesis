@@ -43,7 +43,16 @@ function App() {
                 <h2>Harmonics</h2>
                 <p>
                     Harmonics are vibrations that make soundwaves different from
-                    one another. The timbre.
+                    one another. The timbre/colour of a tone.
+                </p>
+                <p>
+                    These vibrations are quieter than the original sound (the
+                    fundamental frequency) and always in the shape of sinewaves,
+                    no matter the waveform that produced the sound.
+                </p>
+                <p>
+                    Changing the amount or volume of harmonics will change the
+                    timbre of the sound.
                 </p>
                 <Player showPartials />
 

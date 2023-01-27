@@ -5,27 +5,26 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 interface OscProps {
-    // an oscillator ref passed as a prop from App
-    oscillatorRef: React.MutableRefObject<Tone.Oscillator>;
+    oscillatorRef: React.MutableRefObject<Tone.Oscillator>; // an oscillator ref
     filterType?: BiquadFilterType;
     showPartials?: boolean;
     showFrequency?: boolean;
 }
 
 export function Oscillator(props: OscProps) {
-    // useRef to track values instead of useState, so they don't trigger a re-render
+    // useRef to track osc values so updates don't trigger a re-render
     const osc = props.oscillatorRef.current;
-    let oscFrequency = useRef(440).current;
-    let oscPartialsCount = useRef(0).current;
+
     // const filt = new Tone.Filter("1000", props.filterType).toDestination();
     // osc.connect(filt);
 
-    console.log("RENDER", "PARTIALS:", oscPartialsCount);
-
-    //! State is only used to trigger a re-render for the comps that need re render, like slider and count
-    //! Why it works for slider and not for partials count?
-    const [sliderFreq, setSliderFreq] = useState<number>(oscFrequency);
-    const [partialsCount, setPartialsCount] = useState<number>(0);
+    // useState to trigger a re-render for the comps that need it, like slider and count
+    const [sliderFreq, setSliderFreq] = useState<number>(
+        osc.frequency.value as number
+    );
+    const [partialsCount, setPartialsCount] = useState<number>(
+        osc.partialCount
+    );
     // const [filterFreq, setFilterFreq] = useState<number>(1000);
 
     const toggle = () => {
@@ -34,9 +33,9 @@ export function Oscillator(props: OscProps) {
     };
 
     const updateOscFreq = (e: Event, value: number) => {
-        oscFrequency = value;
-        osc.frequency.value = oscFrequency;
-        setSliderFreq(oscFrequency);
+        // oscFrequency = value;
+        osc.frequency.value = value;
+        setSliderFreq(value);
     };
 
     const addPartial = () => {
