@@ -2,6 +2,7 @@ import * as Tone from "tone";
 import { useState, useEffect, useRef } from "react";
 import { Container } from "@mui/material";
 import { Oscillator } from "../Oscillator/Oscillator";
+import { Visualizer } from "../Visualizer/Visualizer";
 
 //* This comp creates the source and visualizer
 
@@ -52,7 +53,7 @@ export function Player(props: PlayerProps) {
             {props.filter ? (
                 // osc with filter
                 <Container maxWidth="sm">
-                    {/* waveform visuals here */}
+                    <Visualizer sourceRef={oscFiltRef} />
                     <Oscillator
                         oscillatorRef={oscFiltRef}
                         // filterRef={filtRef}
@@ -62,7 +63,7 @@ export function Player(props: PlayerProps) {
             ) : (
                 // basic osc
                 <Container maxWidth="sm">
-                    {/* waveform visuals here */}
+                    <Visualizer sourceRef={oscRef} />
                     <Oscillator
                         oscillatorRef={oscRef}
                         showPartials={showPartials}
