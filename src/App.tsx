@@ -68,22 +68,23 @@ function App() {
                     The low pass filter removes high frequencies. Makes the
                     sound darker and warmer
                 </p>
-                {/* <Player filter filterType="highpass" showFrequency={false} /> */}
+                <Player filter filterType="lowpass" />
                 <h3>High pass</h3>
                 <p>
                     The high pass filter removes low frequencies. Makes the
                     sound brighter and more brilliant
                 </p>
-                {/* <Player filter filterType="bandpass" showFrequency={false} /> */}
+                <Player filter filterType="highpass" />
                 <h3>Band pass</h3>
                 <p>
                     The band pass filter is a combination of high and low
                     filters. Makes the sound punchy.
                 </p>
-                {/* <Player filter filterType="bandpass" /> */}
+                <Player filter filterType="bandpass" />
 
                 <h2>Amplitude</h2>
                 <p>It's the volume</p>
+                <Player showVolume />
 
                 <h2>Envelope</h2>
                 <h3>ADSR</h3>

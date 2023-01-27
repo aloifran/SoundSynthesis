@@ -11,24 +11,24 @@ interface PlayerProps {
     filterType?: BiquadFilterType;
     showFrequency?: boolean;
     showPartials?: boolean;
+    showVolume?: boolean;
 }
 
 export function Player(props: PlayerProps) {
-    const osc = new Tone.Oscillator(
-        "440",
-        props.oscillatorType
-    ).toDestination();
+    const osc = new Tone.Oscillator(440, props.oscillatorType).toDestination();
     const oscRef = useRef<Tone.Oscillator>(osc);
+    osc.volume.value = -20;
 
     // filter is connected to the osc, so no need for a new component, the osc will be sent
     //! how to change filter props when it's connected to osc?
-    const filt = new Tone.Filter().toDestination();
+    const filt = new Tone.Filter(1000, props.filterType).toDestination();
     const oscFiltRef = useRef<Tone.Oscillator>(osc.connect(filt));
+    const filtRef = useRef<Tone.Filter>(filt);
 
-    const [filterType, setFilterType] = useState<BiquadFilterType>("allpass");
     const [filter, setFilter] = useState<boolean>(false);
     const [showFrequency, setShowFrequency] = useState<boolean>(true);
     const [showPartials, setShowPartials] = useState<boolean>(false);
+    const [showVolume, setShowVolume] = useState<boolean>(false);
 
     // set default values to props cause they are optional.
     // If provided use the values from props, else use the default values
@@ -36,14 +36,14 @@ export function Player(props: PlayerProps) {
         if (props.filter) {
             setFilter(true);
         }
-        if (props.filterType) {
-            setFilterType(props.filterType);
-        }
         if (props.showFrequency === false) {
             setShowFrequency(false);
         }
         if (props.showPartials) {
             setShowPartials(true);
+        }
+        if (props.showVolume) {
+            setShowVolume(true);
         }
     }, []);
 
@@ -54,8 +54,8 @@ export function Player(props: PlayerProps) {
                 <Container maxWidth="sm">
                     {/* waveform visuals here */}
                     <Oscillator
-                        oscillatorRef={oscRef}
-                        filterType={filterType}
+                        oscillatorRef={oscFiltRef}
+                        // filterRef={filtRef}
                         showFrequency={showFrequency}
                     />
                 </Container>
@@ -67,6 +67,7 @@ export function Player(props: PlayerProps) {
                         oscillatorRef={oscRef}
                         showPartials={showPartials}
                         showFrequency={showFrequency}
+                        showVolume={showVolume}
                     />
                 </Container>
             )}
