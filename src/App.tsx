@@ -84,7 +84,7 @@ function App() {
 
                 <h2>Amplitude</h2>
                 <p>It's the volume</p>
-                {/* <Player showVolume /> */}
+                <Player showVolume />
 
                 <h2>Envelope</h2>
                 <h3>ADSR</h3>

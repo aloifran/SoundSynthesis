@@ -26,28 +26,6 @@ export function Player(props: PlayerProps) {
     const oscFiltRef = useRef<Tone.Oscillator>(osc.connect(filt));
     const filtRef = useRef<Tone.Filter>(filt);
 
-    const [filter, setFilter] = useState<boolean>(false);
-    const [showFrequency, setShowFrequency] = useState<boolean>(true);
-    const [showPartials, setShowPartials] = useState<boolean>(false);
-    const [showVolume, setShowVolume] = useState<boolean>(false);
-
-    // set default values to props cause they are optional.
-    // If provided use the values from props, else use the default values
-    useEffect(() => {
-        if (props.filter) {
-            setFilter(true);
-        }
-        if (props.showFrequency === false) {
-            setShowFrequency(false);
-        }
-        if (props.showPartials) {
-            setShowPartials(true);
-        }
-        if (props.showVolume) {
-            setShowVolume(true);
-        }
-    }, []);
-
     return (
         <>
             {props.filter ? (
@@ -57,7 +35,7 @@ export function Player(props: PlayerProps) {
                     <Oscillator
                         oscillatorRef={oscFiltRef}
                         // filterRef={filtRef}
-                        showFrequency={showFrequency}
+                        showFrequency={props.showFrequency || true}
                     />
                 </Container>
             ) : (
@@ -66,9 +44,9 @@ export function Player(props: PlayerProps) {
                     <Visualizer sourceRef={oscRef} />
                     <Oscillator
                         oscillatorRef={oscRef}
-                        showPartials={showPartials}
-                        showFrequency={showFrequency}
-                        showVolume={showVolume}
+                        showPartials={props.showPartials || false}
+                        showFrequency={props.showFrequency || true}
+                        showVolume={props.showVolume || false}
                     />
                 </Container>
             )}

@@ -9,7 +9,6 @@ interface VisualizerProps {
 }
 
 export function Visualizer(props: VisualizerProps) {
-    console.log("VISUALLLLLLLLLLLLSSSSSSSSSSSSSSSSSS");
     const source = props.sourceRef.current;
     let analyser: Tone.Analyser;
     // let playing = false;
