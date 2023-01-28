@@ -22,22 +22,18 @@ function App() {
                     A waveform is a visual representation of a continuous tone
                     that you can hear.
                 </p>
-
                 <p>Types of waveforms:</p>
+
                 <h3>Sine</h3>
-                <img src="sine_wave.jpg" />
                 <Player oscillatorType="sine" />
 
                 <h3>Triangle</h3>
-                <img src="triangle_wave.jpg" />
                 <Player oscillatorType="triangle" />
 
                 <h3>Sawtooth</h3>
-                <img src="saw_wave.jpg" />
                 <Player oscillatorType="sawtooth" />
 
                 <h3>Square</h3>
-                <img src="square_wave.jpg" />
                 <Player oscillatorType="square" />
 
                 <h2>Harmonics</h2>
@@ -54,7 +50,7 @@ function App() {
                     Changing the amount or volume of harmonics will change the
                     timbre of the sound.
                 </p>
-                <Player showPartials />
+                <Player showPartials showTypes />
 
                 <h2>Filter</h2>
                 <p>

@@ -2,24 +2,25 @@ import * as Tone from "tone";
 import { ReactP5Wrapper, Sketch } from "react-p5-wrapper";
 import { Container } from "@mui/material";
 
-//* This comp takes waveform data from a sound source and visualizes it
+//* This component takes waveform data from a sound source and visualizes it
 
 interface VisualizerProps {
     sourceRef: React.MutableRefObject<Tone.Oscillator>; // an oscillator ref as source
+    waveform?: Tone.ToneOscillatorType;
 }
 
 export function Visualizer(props: VisualizerProps) {
     const source = props.sourceRef.current;
     let analyser: Tone.Analyser;
-    // let playing = false;
 
     // canvas logic using ReactP5Wrapper, that wraps setup and draw
     const sketch: Sketch = (p5) => {
         p5.setup = () => {
-            p5.createCanvas(500, 300);
+            p5.createCanvas(536, 386);
 
-            // Create an analyser node that makes a waveform and connect to source to detect waveform
+            // Create an analyser node that makes a waveform and connect to source to get data
             analyser = new Tone.Analyser("waveform", 128);
+            //! add a control for the waveform FFT size (power of 2)
             source.connect(analyser);
         };
 
@@ -30,13 +31,11 @@ export function Visualizer(props: VisualizerProps) {
 
             const dim = Math.min(p5.width, p5.height);
 
-            p5.background(25);
-            p5.strokeWeight(dim * 0.005);
-            p5.stroke(255);
+            p5.background(25, 45, 72);
+            p5.strokeWeight(dim * 0.007);
+            p5.stroke(213, 232, 253);
             p5.noFill();
 
-            // Draw waveform if playing
-            // if (playing) {
             const values = analyser.getValue();
 
             p5.beginShape();
@@ -48,12 +47,12 @@ export function Visualizer(props: VisualizerProps) {
                 p5.vertex(x, y);
             }
             p5.endShape();
-
-            // }
         };
     };
+
     return (
-        <Container>
+        <Container id="visualizer-img-container">
+            {props.waveform && <img src={props.waveform + ".jpg"} />}
             <ReactP5Wrapper sketch={sketch} />
         </Container>
     );

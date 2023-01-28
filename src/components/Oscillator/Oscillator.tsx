@@ -1,6 +1,12 @@
 import * as Tone from "tone";
-import { useState, useEffect, useRef } from "react";
-import { Slider, Switch, FormControlLabel, Button } from "@mui/material";
+import { useState } from "react";
+import {
+    Slider,
+    Switch,
+    FormControlLabel,
+    Button,
+    ButtonGroup,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
@@ -11,6 +17,7 @@ interface OscProps {
     showPartials?: boolean;
     showFrequency?: boolean;
     showVolume?: boolean;
+    showTypes?: boolean;
 }
 
 export function Oscillator(props: OscProps) {
@@ -22,7 +29,7 @@ export function Oscillator(props: OscProps) {
     // if (props.filterRef) {
     // }
 
-    // useState to trigger a re-render for the comps that need it, like slider and count
+    // useState to trigger a re-render for the comps that need it
     const [oscFreqSlider, setOscFreqSlider] = useState<number>(
         osc.frequency.value as number
     );
@@ -47,18 +54,28 @@ export function Oscillator(props: OscProps) {
             "| state:",
             osc.state,
             "| freq:",
-            osc.frequency.value
+            osc.frequency.value,
+            "| vol:",
+            osc.volume.value,
+            "| partials:",
+            osc.partialCount
         );
     };
 
-    const updateOscFreq = (e: Event, value: number) => {
+    const changeOscFreq = (e: Event, value: number) => {
         osc.frequency.value = value;
         setOscFreqSlider(value);
     };
 
-    const updateOscVol = (e: Event, value: number) => {
+    const changeOscVol = (e: Event, value: number) => {
         osc.volume.value = value;
         setOscVolSlider(value);
+    };
+
+    const changeOscType = (type: Tone.ToneOscillatorType) => {
+        partialsCount === 0
+            ? (osc.type = type)
+            : (osc.type = (type + partialsCount) as Tone.ToneOscillatorType);
     };
 
     // const updateFilterFreq = (e: Event, value: number) => {
@@ -72,10 +89,9 @@ export function Oscillator(props: OscProps) {
     // };
 
     const addPartial = () => {
-        if (osc.partialCount >= 0 && osc.partialCount < 10) {
+        if (osc.partialCount >= 0 && osc.partialCount < 32) {
             osc.partialCount++;
             setPartialsCount(osc.partialCount);
-            console.log("ADDED PARTIAL TO OSC");
         }
     };
 
@@ -83,7 +99,6 @@ export function Oscillator(props: OscProps) {
         if (osc.partialCount > 0) {
             osc.partialCount--;
             setPartialsCount(osc.partialCount);
-            console.log("REMOVED PARTIAL FROM OSC");
         }
     };
 
@@ -96,6 +111,25 @@ export function Oscillator(props: OscProps) {
             />
 
             {/* OSC PROPS */}
+            {props.showTypes && (
+                <>
+                    <p>Waveform:</p>
+                    <ButtonGroup variant="text">
+                        <Button onClick={() => changeOscType("sine")}>
+                            Sine
+                        </Button>
+                        <Button onClick={() => changeOscType("triangle")}>
+                            Triangle
+                        </Button>
+                        <Button onClick={() => changeOscType("sawtooth")}>
+                            Sawtooth
+                        </Button>
+                        <Button onClick={() => changeOscType("square")}>
+                            Square
+                        </Button>
+                    </ButtonGroup>
+                </>
+            )}
             {props.showFrequency && (
                 <>
                     <p>Frequency: {oscFreqSlider} Hz</p>
@@ -104,7 +138,7 @@ export function Oscillator(props: OscProps) {
                         min={15}
                         max={1500}
                         onChange={(e, value) =>
-                            updateOscFreq(e, value as number)
+                            changeOscFreq(e, value as number)
                         }
                         value={oscFreqSlider}
                     />
@@ -116,9 +150,9 @@ export function Oscillator(props: OscProps) {
                     <Slider
                         size="small"
                         min={-50}
-                        max={50}
+                        max={20}
                         onChange={(e, value) =>
-                            updateOscVol(e, value as number)
+                            changeOscVol(e, value as number)
                         }
                         value={oscVolSlider}
                     />
