@@ -22,7 +22,7 @@ function App() {
                     A waveform is a visual representation of a continuous tone
                     that you can hear.
                 </p>
-                <p>Types of waveforms:</p>
+                <h3>Types of waveforms:</h3>
 
                 <h3>Sine</h3>
                 <Player oscillatorType="sine" />
@@ -55,28 +55,47 @@ function App() {
                 <h2>Filter</h2>
                 <p>
                     A filter reshapes the harmonic content that comes from the
-                    oscillator. It shapes the timbre/color of a tone by removing
-                    or changing harmonics from it.
+                    oscillator. It shapes the timbre/color of a tone by blocking
+                    some frequencies in the waveform and letting others pass,
+                    and changing harmonics from it.
                 </p>
+
                 <p>Types of filters:</p>
                 <h3>Low pass</h3>
                 <p>
                     The low pass filter removes high frequencies. Makes the
-                    sound darker and warmer
+                    sound darker and warmer.
                 </p>
-                {/* <Player filter filterType="lowpass" /> */}
+                <Player
+                    showFilter
+                    filterType="lowpass"
+                    showPartials
+                    showTypes
+                />
+
                 <h3>High pass</h3>
                 <p>
                     The high pass filter removes low frequencies. Makes the
-                    sound brighter and more brilliant
+                    sound brighter and brilliant.
                 </p>
-                {/* <Player filter filterType="highpass" /> */}
+                <Player
+                    showFilter
+                    filterType="highpass"
+                    showPartials
+                    showTypes
+                />
+
                 <h3>Band pass</h3>
                 <p>
                     The band pass filter is a combination of high and low
                     filters. Makes the sound punchy.
                 </p>
-                {/* <Player filter filterType="bandpass" /> */}
+                <Player
+                    showFilter
+                    filterType="bandpass"
+                    showPartials
+                    showTypes
+                />
 
                 <h2>Amplitude</h2>
                 <p>It's the volume</p>
@@ -88,6 +107,18 @@ function App() {
 
                 <h2>LFO</h2>
                 <p>Low Frequency Oscillator</p>
+                <p>
+                    It's a very low-pitched oscillator (usually below 20Hz, out
+                    of the range of human listening) whose waveforms create
+                    slow-voltage-based changes or "modulations" in certain
+                    parameters of the sound source.
+                </p>
+                <p>
+                    The LFO signal automatically oscillates the values of the
+                    parameter we choose. Its controls modify how the automation
+                    behaves.
+                </p>
+                {/* <Player showTypes lfo /> */}
             </div>
         </>
     );

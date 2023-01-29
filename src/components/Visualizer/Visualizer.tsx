@@ -20,7 +20,6 @@ export function Visualizer(props: VisualizerProps) {
 
             // Create an analyser node that makes a waveform and connect to source to get data
             analyser = new Tone.Analyser("waveform", 128);
-            //! add a control for the waveform FFT size (power of 2)
             source.connect(analyser);
         };
 
@@ -32,7 +31,7 @@ export function Visualizer(props: VisualizerProps) {
             const dim = Math.min(p5.width, p5.height);
 
             p5.background(25, 45, 72);
-            p5.strokeWeight(dim * 0.007);
+            p5.strokeWeight(dim * 0.008);
             p5.stroke(213, 232, 253);
             p5.noFill();
 

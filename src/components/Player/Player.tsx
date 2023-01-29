@@ -8,8 +8,9 @@ import { Visualizer } from "../Visualizer/Visualizer";
 
 interface PlayerProps {
     oscillatorType?: Tone.ToneOscillatorType;
-    filter?: boolean;
+    showFilter?: boolean;
     filterType?: BiquadFilterType;
+    showLFO?: boolean;
     showFrequency?: boolean;
     showPartials?: boolean;
     showVolume?: boolean;
@@ -18,43 +19,38 @@ interface PlayerProps {
 
 export function Player(props: PlayerProps) {
     Tone.Destination.volume.value = -15;
-    const osc = new Tone.Oscillator(440, props.oscillatorType).toDestination();
+
+    // Oscillator
+    const osc = new Tone.Oscillator(376, props.oscillatorType).toDestination();
     osc.volume.value = -8;
     const oscRef = useRef<Tone.Oscillator>(osc);
 
-    // filter is connected to the osc, so no need for a new component, the osc will be sent
-    const filt = new Tone.Filter(1000, props.filterType).toDestination();
-    const oscFiltRef = useRef<Tone.Oscillator>(osc.connect(filt));
+    // Filter
+    const filt = new Tone.Filter(500, props.filterType, -96).toDestination();
     const filtRef = useRef<Tone.Filter>(filt);
+
+    // LFO
+    //! define what the LFO affects at the moment of initialization or later? to set the min/max values according to the source affected
+    const lfo = new Tone.LFO(1, 0, 100);
+    const lfoRef = useRef<Tone.LFO>(lfo);
 
     return (
         <>
-            {props.filter ? (
-                // osc with filter
-                <Container maxWidth="sm">
-                    <Visualizer sourceRef={oscFiltRef} />
-                    <Oscillator
-                        oscillatorRef={oscFiltRef}
-                        // filterRef={filtRef}
-                        showFrequency={props.showFrequency || true}
-                    />
-                </Container>
-            ) : (
-                // basic osc
-                <Container maxWidth="sm">
-                    <Visualizer
-                        sourceRef={oscRef}
-                        waveform={props.oscillatorType}
-                    />
-                    <Oscillator
-                        oscillatorRef={oscRef}
-                        showPartials={props.showPartials || false}
-                        showFrequency={props.showFrequency || true}
-                        showVolume={props.showVolume || false}
-                        showTypes={props.showTypes || false}
-                    />
-                </Container>
-            )}
+            <Container maxWidth="sm">
+                <Visualizer
+                    sourceRef={oscRef}
+                    waveform={props.oscillatorType}
+                />
+                <Oscillator
+                    oscillatorRef={oscRef}
+                    filterRef={props.showFilter ? filtRef : undefined}
+                    lfoRef={props.showLFO ? lfoRef : undefined}
+                    showPartials={props.showPartials || false}
+                    showFrequency={props.showFrequency || true}
+                    showVolume={props.showVolume || false}
+                    showTypes={props.showTypes || false}
+                />
+            </Container>
         </>
     );
 }
