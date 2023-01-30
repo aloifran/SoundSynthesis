@@ -1,20 +1,65 @@
 import "./App.css";
 import { Player } from "./components/Player/Player";
-import { Container } from "@mui/material";
+import { Mute } from "./components/Mute/Mute";
+import { Container, Divider, List, ListItem } from "@mui/material";
+import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 function App() {
     return (
         <>
+            <Mute />
             <nav>
                 <h1>What's Sound Synthesis?</h1>
-                <p>It's the process of creating sounds using synthesizers.</p>
+                <p>
+                    It's the process of creating sounds using electronic
+                    instruments called synthesizers.{" "}
+                    <Link
+                        className="link-small"
+                        target="_blank"
+                        to="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Introduction"
+                    >
+                        Read more
+                    </Link>
+                </p>
+                <p>The following topics are covered in this site:</p>
+
+                <List sx={{ display: "flex" }}>
+                    <ListItem id="li">
+                        <HashLink smooth to={"/#oscillator"}>
+                            Oscillator
+                        </HashLink>
+                    </ListItem>
+                    <ListItem id="li">
+                        <HashLink smooth to={"/#harmonics"}>
+                            Harmonics
+                        </HashLink>
+                    </ListItem>
+                    <ListItem id="li">
+                        <HashLink smooth to={"/#filter"}>
+                            Filter
+                        </HashLink>
+                    </ListItem>
+                    <ListItem id="li">
+                        <HashLink smooth to={"/#amplitude"}>
+                            Amplitude
+                        </HashLink>
+                    </ListItem>
+                    <ListItem id="li">
+                        <HashLink smooth to={"/#lfo"}>
+                            LFO
+                        </HashLink>
+                    </ListItem>
+                </List>
             </nav>
 
-            <Container fixed id="oscillator">
+            <Divider id="divider-top" />
+
+            <Container id="oscillator">
                 <HashLink smooth to={"/#oscillator"}>
                     <h2>The Oscillator</h2>
                 </HashLink>
+
                 <p>
                     The essential part of a synthesizer is an oscillator because
                     it's the only sound source. It generates an electrical
@@ -25,20 +70,23 @@ function App() {
                 <p>
                     A waveform is a visual representation of a continuous tone.
                 </p>
+
                 <h4>The types of waveforms are:</h4>
+
+                <h2>Sine</h2>
+                <Player oscillatorType="sine" />
+
+                <h2>Triangle</h2>
+                <Player oscillatorType="triangle" />
+
+                <h2>Sawtooth</h2>
+                <Player oscillatorType="sawtooth" />
+
+                <h2>Square</h2>
+                <Player oscillatorType="square" />
             </Container>
 
-            <h3>Sine</h3>
-            <Player oscillatorType="sine" />
-
-            <h3>Triangle</h3>
-            <Player oscillatorType="triangle" />
-
-            <h3>Sawtooth</h3>
-            <Player oscillatorType="sawtooth" />
-
-            <h3>Square</h3>
-            <Player oscillatorType="square" />
+            <Divider id="divider" />
 
             <Container fixed id="harmonics">
                 <HashLink smooth to={"/#harmonics"}>
@@ -46,7 +94,7 @@ function App() {
                 </HashLink>
                 <p>
                     Harmonics are vibrations that make soundwaves different from
-                    one another. The timbre/colour of a tone.
+                    one another. The timbre of a tone.
                 </p>
                 <p>
                     These vibrations are quieter than the original sound (the
@@ -59,6 +107,8 @@ function App() {
                 </p>
                 <Player showPartials showTypes />
             </Container>
+
+            <Divider id="divider" />
 
             <Container fixed id="filter">
                 <HashLink smooth to={"/#filter"}>
@@ -109,6 +159,8 @@ function App() {
                 />
             </Container>
 
+            <Divider id="divider" />
+
             <Container fixed id="amplitude">
                 <HashLink smooth to={"/#amplitude"}>
                     <h2>Amplitude</h2>
@@ -117,6 +169,8 @@ function App() {
                 <Player showVolume />
             </Container>
 
+            <Divider id="divider" />
+
             <Container fixed id="envelope">
                 <HashLink smooth to={"/#envelope"}>
                     <h2>Envelope</h2>
@@ -124,6 +178,8 @@ function App() {
                 <h3>ADSR</h3>
                 <p>Attack Decay Sustain Release</p>
             </Container>
+
+            <Divider id="divider" />
 
             <Container fixed id="lfo">
                 <HashLink smooth to={"/#lfo"}>
@@ -142,6 +198,11 @@ function App() {
                     behaves.
                 </p>
                 {/* <Player showTypes lfo /> */}
+            </Container>
+
+            <Divider id="divider" />
+            <Container fixed id="footer">
+                2023 Francisco Aloi Deheza
             </Container>
         </>
     );

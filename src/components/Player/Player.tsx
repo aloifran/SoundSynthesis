@@ -18,11 +18,11 @@ interface PlayerProps {
 }
 
 export function Player(props: PlayerProps) {
-    Tone.Destination.volume.value = -15;
+    Tone.Destination.volume.value = -12;
 
     // Oscillator
     const osc = new Tone.Oscillator(376, props.oscillatorType).toDestination();
-    osc.volume.value = -10;
+    osc.volume.value = -12;
     const oscRef = useRef<Tone.Oscillator>(osc);
 
     // Filter

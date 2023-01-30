@@ -113,7 +113,7 @@ export function Oscillator(props: OscProps) {
     };
 
     return (
-        <div>
+        <>
             <Stack
                 direction="row"
                 spacing={1}
@@ -154,7 +154,7 @@ export function Oscillator(props: OscProps) {
                     </p>
 
                     <Slider
-                        size="small"
+                        id="slider"
                         min={15}
                         max={1500}
                         onChange={(e, value) =>
@@ -171,7 +171,7 @@ export function Oscillator(props: OscProps) {
                     </p>
 
                     <Slider
-                        size="small"
+                        id="slider"
                         min={-50}
                         max={10}
                         onChange={(e, value) =>
@@ -184,7 +184,7 @@ export function Oscillator(props: OscProps) {
             {props.showPartials && (
                 <>
                     <p>
-                        <strong>Partials/Harmonics</strong>
+                        <strong>Harmonics</strong>
                     </p>
                     <Button variant="outlined" onClick={removePartial}>
                         <RemoveIcon />
@@ -205,7 +205,7 @@ export function Oscillator(props: OscProps) {
                         <strong>Filter frequency</strong> {filterFreqSlider} Hz
                     </p>
                     <Slider
-                        size="small"
+                        id="slider"
                         min={0}
                         max={10000}
                         step={10}
@@ -216,7 +216,7 @@ export function Oscillator(props: OscProps) {
                     />
                     {/* <p>Filter Quality: {filterQSlider} Hz</p>
                     <Slider
-                        size="small"
+                        id="slider"
                         min={0}
                         max={100}
                         value={filterQSlider}
@@ -234,7 +234,7 @@ export function Oscillator(props: OscProps) {
                         <strong>LFO frequency</strong> {lfoFreqSlider} Hz
                     </p>
                     <Slider
-                        size="small"
+                        id="slider"
                         min={0.1}
                         max={10}
                         value={lfoFreqSlider}
@@ -244,6 +244,6 @@ export function Oscillator(props: OscProps) {
                     />
                 </>
             )}
-        </div>
+        </>
     );
 }
