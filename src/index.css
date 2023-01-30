@@ -63,6 +63,8 @@ h4 {
 
 #slider {
     width: 60%;
+    padding: 6px 0;
+    margin: 0 12px;
 }
 
 #divider {

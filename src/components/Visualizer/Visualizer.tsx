@@ -7,6 +7,7 @@ import { Container } from "@mui/material";
 interface VisualizerProps {
     sourceRef: React.MutableRefObject<Tone.Oscillator>;
     waveform?: Tone.ToneOscillatorType;
+    adsr?: boolean;
 }
 
 export function Visualizer(props: VisualizerProps) {
@@ -19,9 +20,12 @@ export function Visualizer(props: VisualizerProps) {
             p5.createCanvas(536, 386);
 
             // Create an analyser node that makes a waveform and connect to source to get data
-            // for FFT
-            // analyser = new Tone.Analyser("fft", 4096);
-            analyser = new Tone.Analyser("waveform", 128);
+
+            // FFT or Waveform
+            props.adsr
+                ? (analyser = new Tone.Analyser("fft", 4096))
+                : (analyser = new Tone.Analyser("waveform", 128));
+
             source.connect(analyser);
         };
 
@@ -41,12 +45,17 @@ export function Visualizer(props: VisualizerProps) {
             for (let i = 0; i < values.length; i++) {
                 const amplitude = values[i];
                 const x = p5.map(i, 0, values.length - 1, 0, p5.width);
+                let y = 0;
 
-                // for FFT
-                // const offset = p5.map(amplitude, -100, -30, 0, 1);
-                // const y = p5.height - offset * p5.height;
-
-                const y = p5.height / 2 + +amplitude * p5.height;
+                // FFT
+                if (props.adsr) {
+                    const offset = p5.map(amplitude, -100, -30, 0, 1);
+                    y = p5.height - offset * p5.height;
+                }
+                // Waveform
+                else {
+                    y = p5.height / 2 + +amplitude * p5.height;
+                }
                 p5.vertex(x, y);
             }
             p5.endShape();
@@ -56,6 +65,7 @@ export function Visualizer(props: VisualizerProps) {
     return (
         <Container id="visualizer-img-container">
             {props.waveform && <img src={props.waveform + ".jpg"} />}
+            {props.adsr && <img src="ADSR.jpg" />}
             <ReactP5Wrapper sketch={sketch} />
         </Container>
     );

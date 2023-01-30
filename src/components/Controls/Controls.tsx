@@ -4,35 +4,40 @@ import { Slider, Switch, Button, ButtonGroup, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-interface OscProps {
-    // Refs to control values of each
-    oscillatorRef: React.MutableRefObject<Tone.Oscillator>;
-    filterRef?: React.MutableRefObject<Tone.Filter>;
-    lfoRef?: React.MutableRefObject<Tone.LFO>;
+interface ControlsProps {
+    // Refs to control values
+    oscillator: React.MutableRefObject<Tone.Oscillator>;
+    filter?: React.MutableRefObject<Tone.Filter>;
+    envelope?: React.MutableRefObject<Tone.Envelope>;
+    LFO?: React.MutableRefObject<Tone.LFO>;
+
     showPartials?: boolean;
     showFrequency?: boolean;
     showVolume?: boolean;
     showTypes?: boolean;
 }
 
-export function Oscillator(props: OscProps) {
-    // useRef to change values and don't trigger a re-render
-    const osc = props.oscillatorRef.current;
+export function Controls(props: ControlsProps) {
+    // Oscillator
+    const osc = props.oscillator.current;
 
-    let filt: React.MutableRefObject<Tone.Filter>;
-    //! this is run each time a re-render happens. It should only run once
-    if (props.filterRef) {
-        filt = props.filterRef;
-        osc.chain(filt.current); // for now call chain as filter is only chainable 'effect'
-
-        console.log("FILTER connected | type:", filt.current.type);
+    // Filter
+    let fltr: React.MutableRefObject<Tone.Filter>;
+    if (props.filter) {
+        fltr = props.filter;
+        osc.chain(fltr.current); // for now call chain as filter is only chainable 'effect'
     }
 
-    let lfo: React.MutableRefObject<Tone.LFO>;
-    if (props.lfoRef) {
-        lfo = props.lfoRef;
+    // Envelope
+    let env: React.MutableRefObject<Tone.Envelope>;
+    if (props.envelope) {
+        env = props.envelope;
+    }
 
-        console.log("LFO connected | type:", lfo.current.type);
+    // LFO
+    let lfo: React.MutableRefObject<Tone.LFO>;
+    if (props.LFO) {
+        lfo = props.LFO;
     }
 
     // useState to trigger a re-render for the comps that need it
@@ -46,25 +51,17 @@ export function Oscillator(props: OscProps) {
         osc.partialCount
     );
 
-    // set a number for optional cases cause this happens before initialization
+    const [attackSlider, setAttackSlider] = useState<number>(0.1);
+    const [decaySlider, setDecaySlider] = useState<number>(0.2);
+    const [sustainSlider, setSustainSlider] = useState<number>(0.3);
+    const [releaseSlider, setReleaseSlider] = useState<number>(0.4);
+
     const [lfoFreqSlider, setLfoFreqSlider] = useState<number>(1);
     const [filterFreqSlider, setFilterFreqSlider] = useState<number>(440);
     // const [filterQSlider, setFilterQSlider] = useState<number>(40);
 
     const toggle = () => {
         osc.state === "stopped" ? osc.start() : osc.stop();
-        console.log(
-            "type:",
-            osc.type,
-            "| state:",
-            osc.state,
-            "| freq:",
-            osc.frequency.value,
-            "| vol:",
-            osc.volume.value,
-            "| partials:",
-            osc.partialCount
-        );
     };
 
     const changeOscFreq = (e: Event, value: number) => {
@@ -83,12 +80,29 @@ export function Oscillator(props: OscProps) {
             : (osc.type = (type + partialsCount) as Tone.ToneOscillatorType);
     };
 
-    const updateFilterFreq = (e: Event, value: number) => {
-        filt.current.frequency.value = value;
+    const changeFilterFreq = (e: Event, value: number) => {
+        fltr.current.frequency.value = value;
         setFilterFreqSlider(value);
     };
 
-    const updateLfoFreq = (e: Event, value: number) => {
+    const changeAttack = (e: Event, value: number) => {
+        env.current.attack = value;
+        setAttackSlider(value);
+    };
+    const changeDecay = (e: Event, value: number) => {
+        env.current.decay = value;
+        setDecaySlider(value);
+    };
+    const changeSustain = (e: Event, value: number) => {
+        env.current.sustain = value;
+        setSustainSlider(value);
+    };
+    const changeRelease = (e: Event, value: number) => {
+        env.current.release = value;
+        setReleaseSlider(value);
+    };
+
+    const changeLfoFreq = (e: Event, value: number) => {
         lfo.current.frequency.value = value;
         setLfoFreqSlider(value);
     };
@@ -125,12 +139,30 @@ export function Oscillator(props: OscProps) {
                 <p>On</p>
             </Stack>
 
-            {/* OSC CONTROLS */}
+            {/* OSCILLATOR */}
+            {props.showFrequency && (
+                <>
+                    <span>
+                        <strong>Frequency</strong> {oscFreqSlider} Hz
+                    </span>
+
+                    <Slider
+                        id="slider"
+                        size="small"
+                        min={15}
+                        max={1500}
+                        onChange={(e, value) =>
+                            changeOscFreq(e, value as number)
+                        }
+                        value={oscFreqSlider}
+                    />
+                </>
+            )}
             {props.showTypes && (
                 <>
-                    <p>
+                    <span>
                         <strong>Waveform</strong>
-                    </p>
+                    </span>
                     <ButtonGroup variant="text">
                         <Button onClick={() => changeOscType("sine")}>
                             Sine
@@ -147,31 +179,15 @@ export function Oscillator(props: OscProps) {
                     </ButtonGroup>
                 </>
             )}
-            {props.showFrequency && (
-                <>
-                    <p>
-                        <strong>Frequency</strong> {oscFreqSlider} Hz
-                    </p>
-
-                    <Slider
-                        id="slider"
-                        min={15}
-                        max={1500}
-                        onChange={(e, value) =>
-                            changeOscFreq(e, value as number)
-                        }
-                        value={oscFreqSlider}
-                    />
-                </>
-            )}
             {props.showVolume && (
                 <>
-                    <p>
+                    <span>
                         <strong>Amplitude</strong> {oscVolSlider} Hz
-                    </p>
+                    </span>
 
                     <Slider
                         id="slider"
+                        size="small"
                         min={-50}
                         max={10}
                         onChange={(e, value) =>
@@ -184,7 +200,7 @@ export function Oscillator(props: OscProps) {
             {props.showPartials && (
                 <>
                     <p>
-                        <strong>Harmonics</strong>
+                        <strong>Harmonics</strong> {partialsCount}
                     </p>
                     <Button variant="outlined" onClick={removePartial}>
                         <RemoveIcon />
@@ -192,31 +208,30 @@ export function Oscillator(props: OscProps) {
                     <Button variant="outlined" onClick={addPartial}>
                         <AddIcon />
                     </Button>
-                    <p>
-                        <strong>Amount</strong> {partialsCount}
-                    </p>
                 </>
             )}
 
-            {/* FILTER CONTROLS */}
-            {props.filterRef && (
+            {/* FILTER */}
+            {props.filter && (
                 <>
                     <p>
                         <strong>Filter frequency</strong> {filterFreqSlider} Hz
                     </p>
                     <Slider
                         id="slider"
+                        size="small"
                         min={0}
                         max={10000}
                         step={10}
                         value={filterFreqSlider}
                         onChange={(e, value) =>
-                            updateFilterFreq(e, value as number)
+                            changeFilterFreq(e, value as number)
                         }
                     />
                     {/* <p>Filter Quality: {filterQSlider} Hz</p>
                     <Slider
                         id="slider"
+                        size="small"
                         min={0}
                         max={100}
                         value={filterQSlider}
@@ -227,19 +242,80 @@ export function Oscillator(props: OscProps) {
                 </>
             )}
 
-            {/* LFO CONTROLS */}
-            {props.lfoRef && (
+            {/* ENVELOPE */}
+            {props.envelope && (
+                <>
+                    <Stack
+                        spacing={0}
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <span>Attack {attackSlider}</span>
+                        <Slider
+                            size="small"
+                            id="slider"
+                            min={0}
+                            max={2}
+                            step={0.1}
+                            onChange={(e, value) =>
+                                changeAttack(e, value as number)
+                            }
+                            value={attackSlider}
+                        />
+                        <span>Decay {decaySlider}</span>
+                        <Slider
+                            size="small"
+                            id="slider"
+                            min={0}
+                            max={2}
+                            step={0.1}
+                            onChange={(e, value) =>
+                                changeDecay(e, value as number)
+                            }
+                            value={decaySlider}
+                        />
+                        <span>Sustain {sustainSlider}</span>
+                        <Slider
+                            size="small"
+                            id="slider"
+                            min={0}
+                            max={1}
+                            step={0.1}
+                            onChange={(e, value) =>
+                                changeSustain(e, value as number)
+                            }
+                            value={sustainSlider}
+                        />
+                        <span>Release {releaseSlider}</span>
+                        <Slider
+                            size="small"
+                            id="slider"
+                            min={0}
+                            max={5}
+                            step={0.1}
+                            onChange={(e, value) =>
+                                changeRelease(e, value as number)
+                            }
+                            value={releaseSlider}
+                        />
+                    </Stack>
+                </>
+            )}
+
+            {/* LFO */}
+            {props.LFO && (
                 <>
                     <p>
                         <strong>LFO frequency</strong> {lfoFreqSlider} Hz
                     </p>
                     <Slider
                         id="slider"
+                        size="small"
                         min={0.1}
                         max={10}
                         value={lfoFreqSlider}
                         onChange={(e, value) =>
-                            updateLfoFreq(e, value as number)
+                            changeLfoFreq(e, value as number)
                         }
                     />
                 </>

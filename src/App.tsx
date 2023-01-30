@@ -12,7 +12,7 @@ function App() {
             <nav>
                 <h1>What's Sound Synthesis?</h1>
                 <p>
-                    It's the process of creating sounds using electronic
+                    It's the process of generating sound using electronic
                     instruments called synthesizers.{" "}
                     <Link
                         className="link-small"
@@ -31,6 +31,11 @@ function App() {
                         </HashLink>
                     </ListItem>
                     <ListItem id="li">
+                        <HashLink smooth to={"/#amplitude"}>
+                            Amplitude
+                        </HashLink>
+                    </ListItem>
+                    <ListItem id="li">
                         <HashLink smooth to={"/#harmonics"}>
                             Harmonics
                         </HashLink>
@@ -41,8 +46,8 @@ function App() {
                         </HashLink>
                     </ListItem>
                     <ListItem id="li">
-                        <HashLink smooth to={"/#amplitude"}>
-                            Amplitude
+                        <HashLink smooth to={"/#envelope"}>
+                            Envelope
                         </HashLink>
                     </ListItem>
                     <ListItem id="li">
@@ -73,17 +78,27 @@ function App() {
 
                 <h4>The types of waveforms are:</h4>
 
-                <h2>Sine</h2>
+                <h3>Sine</h3>
                 <Player oscillatorType="sine" />
 
-                <h2>Triangle</h2>
+                <h3>Triangle</h3>
                 <Player oscillatorType="triangle" />
 
-                <h2>Sawtooth</h2>
+                <h3>Sawtooth</h3>
                 <Player oscillatorType="sawtooth" />
 
-                <h2>Square</h2>
+                <h3>Square</h3>
                 <Player oscillatorType="square" />
+            </Container>
+
+            <Divider id="divider" />
+
+            <Container fixed id="amplitude">
+                <HashLink smooth to={"/#amplitude"}>
+                    <h2>Amplitude</h2>
+                </HashLink>
+                <p>It's the volume</p>
+                <Player showVolume />
             </Container>
 
             <Divider id="divider" />
@@ -161,22 +176,17 @@ function App() {
 
             <Divider id="divider" />
 
-            <Container fixed id="amplitude">
-                <HashLink smooth to={"/#amplitude"}>
-                    <h2>Amplitude</h2>
-                </HashLink>
-                <p>It's the volume</p>
-                <Player showVolume />
-            </Container>
-
-            <Divider id="divider" />
-
             <Container fixed id="envelope">
                 <HashLink smooth to={"/#envelope"}>
                     <h2>Envelope</h2>
                 </HashLink>
-                <h3>ADSR</h3>
-                <p>Attack Decay Sustain Release</p>
+                <p>Envelopes control how sounds change over time.</p>
+                <p>
+                    The most common type of envelope generator has four stages:{" "}
+                    <strong>A</strong>ttack, <strong>D</strong>ecay,{" "}
+                    <strong>S</strong>ustain, and <strong>R</strong>elease.
+                </p>
+                <Player showEnvelope showTypes />
             </Container>
 
             <Divider id="divider" />
