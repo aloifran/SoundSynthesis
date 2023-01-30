@@ -12,22 +12,22 @@ interface PlayerProps {
     filterType?: BiquadFilterType;
     showLFO?: boolean;
     showEnvelope?: boolean;
-    showFrequency?: boolean;
     showPartials?: boolean;
     showVolume?: boolean;
     showTypes?: boolean;
+    hideFrequency?: boolean;
 }
 
 export function Player(props: PlayerProps) {
     Tone.Destination.volume.value = -12;
 
     // Oscillator
-    const osc = new Tone.Oscillator(376, props.oscillatorType).toDestination();
+    const osc = new Tone.Oscillator(376, props.oscillatorType);
     osc.volume.value = -12;
     const oscRef = useRef<Tone.Oscillator>(osc);
 
     // Filter
-    const filt = new Tone.Filter(500, props.filterType, -96).toDestination();
+    const filt = new Tone.Filter(500, props.filterType, -96);
     const filtRef = useRef<Tone.Filter>(filt);
 
     // LFO
@@ -36,13 +36,13 @@ export function Player(props: PlayerProps) {
     const lfoRef = useRef<Tone.LFO>(lfo);
 
     // Envelope
-    const env = new Tone.Envelope({
-        attack: 0.1,
+    const env = new Tone.AmplitudeEnvelope({
+        attack: 1.2,
         decay: 0.2,
         sustain: 0.3,
-        release: 0.4,
+        release: 1,
     });
-    const envRef = useRef<Tone.Envelope>(env);
+    const envRef = useRef<Tone.AmplitudeEnvelope>(env);
 
     return (
         <>
@@ -58,7 +58,7 @@ export function Player(props: PlayerProps) {
                     envelope={props.showEnvelope ? envRef : undefined}
                     LFO={props.showLFO ? lfoRef : undefined}
                     showPartials={props.showPartials || false}
-                    showFrequency={props.showFrequency || true}
+                    hideFrequency={props.hideFrequency ? false : true}
                     showVolume={props.showVolume || false}
                     showTypes={props.showTypes || false}
                 />

@@ -186,7 +186,27 @@ function App() {
                     <strong>A</strong>ttack, <strong>D</strong>ecay,{" "}
                     <strong>S</strong>ustain, and <strong>R</strong>elease.
                 </p>
-                <Player showEnvelope showTypes />
+                <p>
+                    <strong>Attack</strong> is the time taken for initial run-up
+                    of level from nil to peak, beginning when the key is
+                    pressed.
+                </p>
+                <p>
+                    <strong>Decay</strong> is the time taken for the subsequent
+                    run down from the attack level to the designated sustain
+                    level.
+                </p>
+                <p>
+                    <strong>Sustain</strong> is the level during the main
+                    sequence of the sound's duration, until the key is released.
+                </p>
+                <p>
+                    <strong>Release</strong> is the time taken for the level to
+                    decay from the sustain level to zero after the key is
+                    released
+                </p>
+
+                <Player showEnvelope hideFrequency />
             </Container>
 
             <Divider id="divider" />

@@ -8,18 +8,28 @@ interface ControlsProps {
     // Refs to control values
     oscillator: React.MutableRefObject<Tone.Oscillator>;
     filter?: React.MutableRefObject<Tone.Filter>;
-    envelope?: React.MutableRefObject<Tone.Envelope>;
+    envelope?: React.MutableRefObject<Tone.AmplitudeEnvelope>;
     LFO?: React.MutableRefObject<Tone.LFO>;
 
     showPartials?: boolean;
-    showFrequency?: boolean;
     showVolume?: boolean;
     showTypes?: boolean;
+    hideFrequency?: boolean;
 }
 
 export function Controls(props: ControlsProps) {
+    console.log(props.hideFrequency);
+
     // Oscillator
-    const osc = props.oscillator.current;
+    const osc = props.oscillator.current.toDestination();
+
+    // Envelope (has a dedicated oscillator)
+    let env: React.MutableRefObject<Tone.AmplitudeEnvelope>;
+    if (props.envelope) {
+        env = props.envelope;
+        env.current.toDestination();
+        new Tone.Oscillator(160, "square3").connect(env.current).start();
+    }
 
     // Filter
     let fltr: React.MutableRefObject<Tone.Filter>;
@@ -28,19 +38,13 @@ export function Controls(props: ControlsProps) {
         osc.chain(fltr.current); // for now call chain as filter is only chainable 'effect'
     }
 
-    // Envelope
-    let env: React.MutableRefObject<Tone.Envelope>;
-    if (props.envelope) {
-        env = props.envelope;
-    }
-
     // LFO
     let lfo: React.MutableRefObject<Tone.LFO>;
     if (props.LFO) {
         lfo = props.LFO;
     }
 
-    // useState to trigger a re-render for the comps that need it
+    // useState to re-render some vars
     const [oscFreqSlider, setOscFreqSlider] = useState<number>(
         osc.frequency.value as number
     );
@@ -51,10 +55,10 @@ export function Controls(props: ControlsProps) {
         osc.partialCount
     );
 
-    const [attackSlider, setAttackSlider] = useState<number>(0.1);
+    const [attackSlider, setAttackSlider] = useState<number>(1.2);
     const [decaySlider, setDecaySlider] = useState<number>(0.2);
     const [sustainSlider, setSustainSlider] = useState<number>(0.3);
-    const [releaseSlider, setReleaseSlider] = useState<number>(0.4);
+    const [releaseSlider, setReleaseSlider] = useState<number>(2);
 
     const [lfoFreqSlider, setLfoFreqSlider] = useState<number>(1);
     const [filterFreqSlider, setFilterFreqSlider] = useState<number>(440);
@@ -62,6 +66,14 @@ export function Controls(props: ControlsProps) {
 
     const toggle = () => {
         osc.state === "stopped" ? osc.start() : osc.stop();
+    };
+
+    const triggerAttack = (e: Event, value: number) => {
+        env.current.triggerAttack();
+    };
+
+    const triggerRelease = (e: Event, value: number) => {
+        env.current.triggerRelease();
     };
 
     const changeOscFreq = (e: Event, value: number) => {
@@ -128,19 +140,31 @@ export function Controls(props: ControlsProps) {
 
     return (
         <>
-            <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <p>Off</p>
-                <Switch onChange={toggle} />
-                <p>On</p>
-            </Stack>
+            {props.envelope ? (
+                <p>
+                    <Button
+                        onMouseDown={triggerAttack}
+                        onMouseUp={triggerRelease}
+                        onMouseLeave={triggerRelease}
+                    >
+                        Play
+                    </Button>
+                </p>
+            ) : (
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <p>Off</p>
+                    <Switch onChange={toggle} />
+                    <p>On</p>
+                </Stack>
+            )}
 
             {/* OSCILLATOR */}
-            {props.showFrequency && (
+            {props.hideFrequency && (
                 <>
                     <span>
                         <strong>Frequency</strong> {oscFreqSlider} Hz
