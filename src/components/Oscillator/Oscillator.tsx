@@ -207,7 +207,8 @@ export function Oscillator(props: OscProps) {
                     <Slider
                         size="small"
                         min={0}
-                        max={3000}
+                        max={10000}
+                        step={10}
                         value={filterFreqSlider}
                         onChange={(e, value) =>
                             updateFilterFreq(e, value as number)

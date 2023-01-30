@@ -14,9 +14,14 @@
         "@mui/icons-material": "^5.11.0",
         "@mui/joy": "^5.0.0-alpha.64",
         "@mui/material": "^5.11.6",
+        "@types/react-router-hash-link": "^2.4.5",
+        "@types/smoothscroll-polyfill": "^0.3.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-p5-wrapper": "^4.1.0",
+        "react-router": "^6.8.0",
+        "react-router-hash-link": "^2.4.3",
+        "smoothscroll-polyfill": "^0.4.4",
         "tone": "^14.7.77"
     },
     "devDependencies": {

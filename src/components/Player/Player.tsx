@@ -22,7 +22,7 @@ export function Player(props: PlayerProps) {
 
     // Oscillator
     const osc = new Tone.Oscillator(376, props.oscillatorType).toDestination();
-    osc.volume.value = -8;
+    osc.volume.value = -10;
     const oscRef = useRef<Tone.Oscillator>(osc);
 
     // Filter
