@@ -23,10 +23,11 @@ export function Controls(props: ControlsProps) {
 
     // Envelope (has a dedicated oscillator)
     let env: React.MutableRefObject<Tone.AmplitudeEnvelope>;
+    let envOsc: Tone.Oscillator;
     if (props.envelope) {
         env = props.envelope;
         env.current.toDestination();
-        new Tone.Oscillator(90, "square6").connect(env.current).start();
+        envOsc = new Tone.Oscillator(90, "square6").connect(env.current);
     }
 
     // Filter
@@ -67,6 +68,9 @@ export function Controls(props: ControlsProps) {
     };
 
     const triggerAttack = () => {
+        if (envOsc.state === "stopped") {
+            envOsc.start();
+        }
         env.current.triggerAttack();
     };
 
@@ -278,9 +282,9 @@ export function Controls(props: ControlsProps) {
                         <Slider
                             size="small"
                             id="slider"
-                            min={0}
+                            min={0.05}
                             max={2}
-                            step={0.1}
+                            step={0.05}
                             onChange={(e, value) =>
                                 changeAttack(e, value as number)
                             }
@@ -290,9 +294,9 @@ export function Controls(props: ControlsProps) {
                         <Slider
                             size="small"
                             id="slider"
-                            min={0}
+                            min={0.05}
                             max={2}
-                            step={0.1}
+                            step={0.05}
                             onChange={(e, value) =>
                                 changeDecay(e, value as number)
                             }
@@ -302,9 +306,9 @@ export function Controls(props: ControlsProps) {
                         <Slider
                             size="small"
                             id="slider"
-                            min={0}
+                            min={0.05}
                             max={1}
-                            step={0.1}
+                            step={0.05}
                             onChange={(e, value) =>
                                 changeSustain(e, value as number)
                             }
@@ -314,9 +318,9 @@ export function Controls(props: ControlsProps) {
                         <Slider
                             size="small"
                             id="slider"
-                            min={0}
+                            min={0.05}
                             max={5}
-                            step={0.1}
+                            step={0.05}
                             onChange={(e, value) =>
                                 changeRelease(e, value as number)
                             }

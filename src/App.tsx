@@ -2,6 +2,8 @@ import "./App.css";
 import { Player } from "./components/Player/Player";
 import { Mute } from "./components/Mute/Mute";
 import { Container, Divider, List, ListItem } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
@@ -9,6 +11,9 @@ function App() {
     return (
         <>
             <Mute />
+            <HashLink id="arrowTop" smooth to={"/#top"}>
+                <ArrowUpwardIcon />
+            </HashLink>
             <nav>
                 <h1>What's Sound Synthesis?</h1>
                 <p>
@@ -240,7 +245,15 @@ function App() {
 
             <Divider id="divider" />
             <Container fixed id="footer">
-                2023 Francisco Aloi Deheza
+                <p>
+                    2023 Francisco Aloi Deheza{" "}
+                    <Link
+                        target="_blank"
+                        to="https://github.com/aloifran/SoundSynthesis"
+                    >
+                        <GitHubIcon />
+                    </Link>
+                </p>
             </Container>
         </>
     );
