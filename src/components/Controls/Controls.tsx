@@ -26,7 +26,7 @@ export function Controls(props: ControlsProps) {
     if (props.envelope) {
         env = props.envelope;
         env.current.toDestination();
-        new Tone.Oscillator(160, "square3").connect(env.current).start();
+        new Tone.Oscillator(90, "square6").connect(env.current).start();
     }
 
     // Filter
@@ -143,9 +143,9 @@ export function Controls(props: ControlsProps) {
                     <Button
                         variant="outlined"
                         color="warning"
-                        onMouseDown={() => triggerAttack()}
-                        onMouseUp={() => triggerRelease()}
-                        onMouseLeave={() => triggerRelease()}
+                        onMouseDown={triggerAttack}
+                        onMouseUp={triggerRelease}
+                        onMouseLeave={triggerRelease}
                     >
                         Play
                     </Button>

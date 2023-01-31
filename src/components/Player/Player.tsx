@@ -19,7 +19,7 @@ interface PlayerProps {
 }
 
 export function Player(props: PlayerProps) {
-    Tone.Destination.volume.value = -12;
+    Tone.Destination.volume.value = -10;
 
     // Oscillator
     const osc = new Tone.Oscillator(376, props.oscillatorType);
@@ -48,7 +48,8 @@ export function Player(props: PlayerProps) {
         <>
             <Container maxWidth="sm">
                 <Visualizer
-                    sourceRef={oscRef}
+                    sourceRefOsc={oscRef}
+                    sourceRefEnv={envRef}
                     waveform={props.oscillatorType}
                     adsr={props.showEnvelope}
                 />
@@ -58,9 +59,9 @@ export function Player(props: PlayerProps) {
                     envelope={props.showEnvelope ? envRef : undefined}
                     LFO={props.showLFO ? lfoRef : undefined}
                     showPartials={props.showPartials || false}
-                    hideFrequency={props.hideFrequency ? false : true}
                     showVolume={props.showVolume || false}
                     showTypes={props.showTypes || false}
+                    hideFrequency={props.hideFrequency ? false : true}
                 />
             </Container>
         </>

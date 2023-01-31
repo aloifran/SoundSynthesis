@@ -206,6 +206,14 @@ function App() {
                     released
                 </p>
 
+                <Link
+                    className="link-small"
+                    target="_blank"
+                    to="https://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope"
+                >
+                    Read more
+                </Link>
+
                 <Player showEnvelope hideFrequency />
             </Container>
 

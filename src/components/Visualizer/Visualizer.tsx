@@ -5,13 +5,14 @@ import { Container } from "@mui/material";
 //* This component takes waveform data from a sound source and visualizes it
 
 interface VisualizerProps {
-    sourceRef: React.MutableRefObject<Tone.Oscillator>;
+    sourceRefOsc: React.MutableRefObject<Tone.Oscillator>;
+    sourceRefEnv: React.MutableRefObject<Tone.AmplitudeEnvelope>;
     waveform?: Tone.ToneOscillatorType;
     adsr?: boolean;
 }
 
 export function Visualizer(props: VisualizerProps) {
-    const source = props.sourceRef.current;
+    let source: Tone.Oscillator | Tone.AmplitudeEnvelope;
     let analyser: Tone.Analyser;
 
     // canvas logic using ReactP5Wrapper
@@ -20,17 +21,20 @@ export function Visualizer(props: VisualizerProps) {
             p5.createCanvas(536, 386);
 
             // Create an analyser node that makes a waveform and connect to source to get data
-
             // FFT or Waveform
-            props.adsr
-                ? (analyser = new Tone.Analyser("fft", 4096))
-                : (analyser = new Tone.Analyser("waveform", 128));
+            if (props.adsr) {
+                analyser = new Tone.Analyser("fft", 4096);
+                source = props.sourceRefEnv.current;
+            } else {
+                analyser = new Tone.Analyser("waveform", 128);
+                source = props.sourceRefOsc.current;
+            }
 
             source.connect(analyser);
         };
 
         p5.draw = () => {
-            // Ensure everything is loaded first
+            // Ensure everything is loaded
             if (!source || !analyser) return;
 
             const dim = Math.min(p5.width, p5.height);
@@ -49,7 +53,7 @@ export function Visualizer(props: VisualizerProps) {
 
                 // FFT
                 if (props.adsr) {
-                    const offset = p5.map(amplitude, -100, -30, 0, 1);
+                    const offset = p5.map(amplitude, -100, 0, 0, 1);
                     y = p5.height - offset * p5.height;
                 }
                 // Waveform
