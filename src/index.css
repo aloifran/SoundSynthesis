@@ -26,11 +26,11 @@ a:hover {
 
 .link-small {
     font-weight: 300;
-    color: rgb(255, 132, 0, 0.9);
+    color: #f57c00;
     text-decoration: inherit;
 }
 .link-small:hover {
-    color: rgba(222, 116, 3, 0.9);
+    color: #cf6801;
 }
 
 body {
@@ -70,12 +70,12 @@ h4 {
 #divider {
     margin-bottom: 2.5em;
     margin-top: 2.5em;
-    border-color: rgba(255, 132, 0, 0.3);
+    border-color: #cf6801;
 }
 
 #divider-top {
     margin-bottom: 2.5em;
-    border-color: rgba(255, 132, 0, 0.3);
+    border-color: #cf6801c0;
 }
 
 #li {

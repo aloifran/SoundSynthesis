@@ -18,8 +18,6 @@ interface ControlsProps {
 }
 
 export function Controls(props: ControlsProps) {
-    console.log(props.hideFrequency);
-
     // Oscillator
     const osc = props.oscillator.current.toDestination();
 
@@ -68,11 +66,11 @@ export function Controls(props: ControlsProps) {
         osc.state === "stopped" ? osc.start() : osc.stop();
     };
 
-    const triggerAttack = (e: Event, value: number) => {
+    const triggerAttack = () => {
         env.current.triggerAttack();
     };
 
-    const triggerRelease = (e: Event, value: number) => {
+    const triggerRelease = () => {
         env.current.triggerRelease();
     };
 
@@ -143,9 +141,11 @@ export function Controls(props: ControlsProps) {
             {props.envelope ? (
                 <p>
                     <Button
-                        onMouseDown={triggerAttack}
-                        onMouseUp={triggerRelease}
-                        onMouseLeave={triggerRelease}
+                        variant="outlined"
+                        color="warning"
+                        onMouseDown={() => triggerAttack()}
+                        onMouseUp={() => triggerRelease()}
+                        onMouseLeave={() => triggerRelease()}
                     >
                         Play
                     </Button>
