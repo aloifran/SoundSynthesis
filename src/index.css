@@ -85,6 +85,10 @@ img {
     box-shadow: 0 0 10px black;
 }
 
+.text {
+    padding: 0 6em 1em;
+}
+
 #arrowTop {
     position: fixed;
     right: 0.5em;

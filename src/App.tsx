@@ -70,18 +70,20 @@ function App() {
                     <h2>The Oscillator</h2>
                 </HashLink>
 
-                <p>
-                    The essential part of a synthesizer is an oscillator because
-                    it's the only sound source. It generates an electrical
-                    signal by rapidly changing voltages in a circuit. Those
-                    oscillations repeat at recurring intervals and generate a{" "}
-                    <strong>waveform</strong>.
-                </p>
-                <p>
-                    A waveform is a visual representation of a continuous tone.
-                </p>
-
-                <h4>The types of waveforms are:</h4>
+                <div className="text">
+                    <p>
+                        The essential part of a synthesizer is an oscillator
+                        because it's the only sound source. It generates an
+                        electrical signal by rapidly changing voltages in a
+                        circuit. Those oscillations repeat at recurring
+                        intervals and generate a <strong>waveform</strong>.
+                    </p>
+                    <p>
+                        A waveform is a visual representation of a continuous
+                        tone.
+                    </p>
+                    <h4>The types of waveforms are:</h4>
+                </div>
 
                 <h3>Sine</h3>
                 <Player oscillatorType="sine" />
@@ -112,19 +114,22 @@ function App() {
                 <HashLink smooth to={"/#harmonics"}>
                     <h2>Harmonics</h2>
                 </HashLink>
-                <p>
-                    Harmonics are vibrations that make soundwaves different from
-                    one another. The timbre of a tone.
-                </p>
-                <p>
-                    These vibrations are quieter than the original sound (the
-                    fundamental frequency) and always in the shape of sinewaves,
-                    no matter the waveform that produced the sound.
-                </p>
-                <p>
-                    Changing the amount or volume of harmonics will change the
-                    timbre of the sound.
-                </p>
+                <div className="text">
+                    <p>
+                        Harmonics are vibrations that make soundwaves different
+                        from one another. The timbre of a tone.
+                    </p>
+                    <p>
+                        These vibrations are quieter than the original sound
+                        (the fundamental frequency) and always in the shape of
+                        sinewaves, no matter the waveform that produced the
+                        sound.
+                    </p>
+                    <p>
+                        Changing the amount or volume of harmonics will change
+                        the timbre of the sound.
+                    </p>
+                </div>
                 <Player showPartials showTypes />
             </Container>
 
@@ -134,12 +139,14 @@ function App() {
                 <HashLink smooth to={"/#filter"}>
                     <h2>Filter</h2>
                 </HashLink>
-                <p>
-                    A filter reshapes the harmonic content that comes from the
-                    oscillator. It shapes the timbre/color of a tone by blocking
-                    some frequencies in the waveform and letting others pass,
-                    and changing harmonics from it.
-                </p>
+                <div className="text">
+                    <p>
+                        A filter reshapes the harmonic content that comes from
+                        the oscillator. It shapes the timbre/color of a tone by
+                        blocking some frequencies in the waveform and letting
+                        others pass, and changing harmonics from it.
+                    </p>
+                </div>
 
                 <p>Types of filters:</p>
                 <h3>Low pass</h3>
@@ -185,39 +192,41 @@ function App() {
                 <HashLink smooth to={"/#envelope"}>
                     <h2>Envelope</h2>
                 </HashLink>
-                <p>Envelopes control how sounds change over time.</p>
-                <p>
-                    The most common type of envelope generator has four stages:{" "}
-                    <strong>A</strong>ttack, <strong>D</strong>ecay,{" "}
-                    <strong>S</strong>ustain, and <strong>R</strong>elease.
-                </p>
-                <p>
-                    <strong>Attack</strong> is the time taken for initial run-up
-                    of level from nil to peak, beginning when the key is
-                    pressed.
-                </p>
-                <p>
-                    <strong>Decay</strong> is the time taken for the subsequent
-                    run down from the attack level to the designated sustain
-                    level.
-                </p>
-                <p>
-                    <strong>Sustain</strong> is the level during the main
-                    sequence of the sound's duration, until the key is released.
-                </p>
-                <p>
-                    <strong>Release</strong> is the time taken for the level to
-                    decay from the sustain level to zero after the key is
-                    released
-                </p>
-
-                <Link
-                    className="link-small"
-                    target="_blank"
-                    to="https://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope"
-                >
-                    Read more
-                </Link>
+                <div className="text">
+                    <p>Envelopes control how sounds change over time.</p>
+                    <p>
+                        The most common type of envelope generator has four
+                        stages: <strong>A</strong>ttack, <strong>D</strong>ecay,{" "}
+                        <strong>S</strong>ustain, and <strong>R</strong>elease.
+                    </p>
+                    <p>
+                        <strong>Attack</strong> is the time taken for initial
+                        run-up of level from nil to peak, beginning when the key
+                        is pressed.
+                    </p>
+                    <p>
+                        <strong>Decay</strong> is the time taken for the
+                        subsequent run down from the attack level to the
+                        designated sustain level.
+                    </p>
+                    <p>
+                        <strong>Sustain</strong> is the level during the main
+                        sequence of the sound's duration, until the key is
+                        released.
+                    </p>
+                    <p>
+                        <strong>Release</strong> is the time taken for the level
+                        to decay from the sustain level to zero after the key is
+                        released
+                    </p>
+                    <Link
+                        className="link-small"
+                        target="_blank"
+                        to="https://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope"
+                    >
+                        Read more
+                    </Link>
+                </div>
 
                 <Player showEnvelope hideFrequency />
             </Container>
@@ -229,17 +238,19 @@ function App() {
                     <h2>LFO</h2>
                 </HashLink>
                 <p>Low Frequency Oscillator</p>
-                <p>
-                    It's a very low-pitched oscillator (usually below 20Hz, out
-                    of the range of human listening) whose waveforms create
-                    slow-voltage-based changes or "modulations" in certain
-                    parameters of the sound source.
-                </p>
-                <p>
-                    The LFO signal automatically oscillates the values of the
-                    parameter we choose. Its controls modify how the automation
-                    behaves.
-                </p>
+                <div className="text">
+                    <p>
+                        It's a very low-pitched oscillator (usually below 20Hz,
+                        out of the range of human listening) whose waveforms
+                        create slow-voltage-based changes or "modulations" in
+                        certain parameters of the sound source.
+                    </p>
+                    <p>
+                        The LFO signal automatically oscillates the values of
+                        the parameter we choose. Its controls modify how the
+                        automation behaves.
+                    </p>
+                </div>
                 {/* <Player showTypes lfo /> */}
             </Container>
 
