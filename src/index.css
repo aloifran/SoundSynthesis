@@ -1,6 +1,5 @@
 :root {
     font-family: Roboto, "Open Sans", "Helvetica Neue", sans-serif;
-    font-size: 17px;
     line-height: 24px;
     font-weight: 400;
 
@@ -15,8 +14,28 @@
     -webkit-text-size-adjust: 100%;
 }
 
+h1 {
+    font-size: 3em;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 2.2em;
+    line-height: 1.1;
+}
+
+h3 {
+    font-size: 1.6em;
+    line-height: 1.1;
+    color: #fa9900;
+}
+
+h4 {
+    font-size: 1.2em;
+    line-height: 1.1;
+}
+
 a {
-    font-weight: 500;
     color: #646cff;
     text-decoration: inherit;
 }
@@ -41,26 +60,6 @@ body {
     min-height: 100vh;
 }
 
-h1 {
-    font-size: 3.4em;
-    line-height: 1.1;
-}
-
-h2 {
-    font-size: 2.4em;
-    line-height: 1.1;
-}
-
-h3 {
-    font-size: 1.6em;
-    line-height: 1.1;
-}
-
-h4 {
-    font-size: 1.2em;
-    line-height: 1.1;
-}
-
 button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -77,16 +76,20 @@ button:hover {
 }
 
 canvas {
-    border: 10px solid black;
-    box-shadow: 0 0 10px black;
+    border: 4px solid black;
+    box-shadow: 0 0 12px black;
 }
 
 img {
-    box-shadow: 0 0 10px black;
+    border: 4px solid black;
+    box-shadow: 0 0 12px black;
+    width: 100%;
 }
 
-.text {
-    padding: 0 6em 1em;
+/* combined with a MUI class */
+.css-1oqqzyl-MuiContainer-root.text {
+    padding-bottom: 0.5em;
+    width: 80%;
 }
 
 #arrowTop {
@@ -136,4 +139,10 @@ img {
     display: flex;
     justify-content: center;
     align-items: baseline;
+}
+
+@media (max-width: 1000px) {
+    #visualizer-img-container {
+        flex-wrap: wrap;
+    }
 }
