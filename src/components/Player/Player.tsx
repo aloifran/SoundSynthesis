@@ -37,9 +37,9 @@ export function Player(props: PlayerProps) {
 
     // Envelope
     const env = new Tone.AmplitudeEnvelope({
-        attack: 1.2,
-        decay: 0.2,
-        sustain: 0.3,
+        attack: 1.0,
+        decay: 0.5,
+        sustain: 0.5,
         release: 1,
     });
     const envRef = useRef<Tone.AmplitudeEnvelope>(env);
@@ -48,16 +48,19 @@ export function Player(props: PlayerProps) {
         <>
             <Container maxWidth="sm">
                 <Visualizer
-                    sourceRefOsc={oscRef}
-                    sourceRefEnv={envRef}
+                    oscillator={oscRef}
+                    envelope={envRef}
                     waveform={props.oscillatorType}
                     adsr={props.showEnvelope}
                 />
                 <Controls
                     oscillator={oscRef}
-                    filter={props.showFilter ? filtRef : undefined}
-                    envelope={props.showEnvelope ? envRef : undefined}
-                    LFO={props.showLFO ? lfoRef : undefined}
+                    filter={filtRef}
+                    envelope={envRef}
+                    LFO={lfoRef}
+                    showFilter={props.showFilter || false}
+                    showEnvelope={props.showEnvelope || false}
+                    showLFO={props.showLFO || false}
                     showPartials={props.showPartials || false}
                     showVolume={props.showVolume || false}
                     showTypes={props.showTypes || false}

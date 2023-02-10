@@ -70,29 +70,43 @@ function App() {
                     <h2>The Oscillator</h2>
                 </HashLink>
 
-                <div className="text">
+                <Container className="text">
                     <p>
                         The essential part of a synthesizer is an oscillator
                         because it's the only sound source. It generates an
                         electrical signal by rapidly changing voltages in a
-                        circuit. Those oscillations repeat at recurring
+                        circuit. Those "oscillations" repeat at recurring
                         intervals and generate a <strong>waveform</strong>.
                     </p>
                     <p>
                         A waveform is a visual representation of a continuous
-                        tone.
+                        tone.{" "}
+                        <Link
+                            className="link-small"
+                            target="_blank"
+                            to="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables"
+                        >
+                            Read more
+                        </Link>
                     </p>
-                    <h4>The types of waveforms are:</h4>
-                </div>
+                    <h4>Type of waveforms:</h4>
+                </Container>
 
                 <h3>Sine</h3>
+                <Container className="text">
+                    <p>
+                        The sine wave can be considered the fundamental building
+                        block of sound. Represents the pure tone of a single
+                        frequency, which is called the fundamental.
+                    </p>
+                </Container>
                 <Player oscillatorType="sine" />
-
-                <h3>Triangle</h3>
-                <Player oscillatorType="triangle" />
 
                 <h3>Sawtooth</h3>
                 <Player oscillatorType="sawtooth" />
+
+                <h3>Triangle</h3>
+                <Player oscillatorType="triangle" />
 
                 <h3>Square</h3>
                 <Player oscillatorType="square" />
@@ -100,7 +114,7 @@ function App() {
 
             <Divider id="divider" />
 
-            <Container fixed id="amplitude">
+            <Container id="amplitude">
                 <HashLink smooth to={"/#amplitude"}>
                     <h2>Amplitude</h2>
                 </HashLink>
@@ -110,11 +124,11 @@ function App() {
 
             <Divider id="divider" />
 
-            <Container fixed id="harmonics">
+            <Container id="harmonics">
                 <HashLink smooth to={"/#harmonics"}>
                     <h2>Harmonics</h2>
                 </HashLink>
-                <div className="text">
+                <Container className="text">
                     <p>
                         Harmonics are vibrations that make soundwaves different
                         from one another. The timbre of a tone.
@@ -122,33 +136,35 @@ function App() {
                     <p>
                         These vibrations are quieter than the original sound
                         (the fundamental frequency) and always in the shape of
-                        sinewaves, no matter the waveform that produced the
+                        sine waves, no matter the waveform that produced the
                         sound.
                     </p>
                     <p>
                         Changing the amount or volume of harmonics will change
                         the timbre of the sound.
                     </p>
-                </div>
+                </Container>
                 <Player showPartials showTypes />
             </Container>
 
             <Divider id="divider" />
 
-            <Container fixed id="filter">
+            <Container id="filter">
                 <HashLink smooth to={"/#filter"}>
                     <h2>Filter</h2>
                 </HashLink>
-                <div className="text">
+
+                <Container className="text">
                     <p>
                         A filter reshapes the harmonic content that comes from
                         the oscillator. It shapes the timbre/color of a tone by
                         blocking some frequencies in the waveform and letting
                         others pass, and changing harmonics from it.
                     </p>
-                </div>
+                </Container>
 
-                <p>Types of filters:</p>
+                <h4>Types of filters:</h4>
+
                 <h3>Low pass</h3>
                 <p>
                     The low pass filter removes high frequencies. Makes the
@@ -192,7 +208,7 @@ function App() {
                 <HashLink smooth to={"/#envelope"}>
                     <h2>Envelope</h2>
                 </HashLink>
-                <div className="text">
+                <Container className="text">
                     <p>Envelopes control how sounds change over time.</p>
                     <p>
                         The most common type of envelope generator has four
@@ -226,7 +242,7 @@ function App() {
                     >
                         Read more
                     </Link>
-                </div>
+                </Container>
 
                 <Player showEnvelope hideFrequency />
             </Container>
@@ -238,7 +254,7 @@ function App() {
                     <h2>LFO</h2>
                 </HashLink>
                 <p>Low Frequency Oscillator</p>
-                <div className="text">
+                <Container className="text">
                     <p>
                         It's a very low-pitched oscillator (usually below 20Hz,
                         out of the range of human listening) whose waveforms
@@ -250,7 +266,7 @@ function App() {
                         the parameter we choose. Its controls modify how the
                         automation behaves.
                     </p>
-                </div>
+                </Container>
                 {/* <Player showTypes lfo /> */}
             </Container>
 

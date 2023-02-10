@@ -1,18 +1,32 @@
 import * as Tone from "tone";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Slider, Switch, Button, ButtonGroup, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { ADSR } from "../ADSR/ADSR";
 
 interface ControlsProps {
     // Refs to control values
+
+    //! optional props should be only booleans, to show/hide stuff, the rest should be always passed to avoid problems
+    // these props from Player should be sent here to show/hide the controls
+    // showLFO?: boolean;
+    // showEnvelope?: boolean;
+    // showPartials?: boolean;
+    // showVolume?: boolean;
+    // showTypes?: boolean;
+    // hideFrequency?: boolean;
+
     oscillator: React.MutableRefObject<Tone.Oscillator>;
-    filter?: React.MutableRefObject<Tone.Filter>;
-    envelope?: React.MutableRefObject<Tone.AmplitudeEnvelope>;
-    LFO?: React.MutableRefObject<Tone.LFO>;
+    filter: React.MutableRefObject<Tone.Filter>;
+    envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
+    LFO: React.MutableRefObject<Tone.LFO>;
 
     showPartials?: boolean;
     showVolume?: boolean;
+    showFilter?: boolean;
+    showEnvelope?: boolean;
+    showLFO?: boolean;
     showTypes?: boolean;
     hideFrequency?: boolean;
 }
@@ -21,46 +35,42 @@ export function Controls(props: ControlsProps) {
     // Oscillator
     const osc = props.oscillator.current.toDestination();
 
-    // Envelope (has a dedicated oscillator)
-    let env: React.MutableRefObject<Tone.AmplitudeEnvelope>;
-    let envOsc: Tone.Oscillator;
-    if (props.envelope) {
-        env = props.envelope;
-        env.current.toDestination();
-        envOsc = new Tone.Oscillator(90, "square6").connect(env.current);
-    }
+    // Envelope (has its own oscillator)
+    const env = props.envelope.current.toDestination();
+    const envOsc = new Tone.Oscillator(100, "square10").connect(env);
+
+    //TODO: FIX refs to pass to ADSR live graph
+    const attackRef = useRef<number>(+env.attack);
+    const decayRef = useRef<number>(+env.decay);
+    const sustainRef = useRef<number>(+env.sustain);
+    const releaseRef = useRef<number>(+env.release);
 
     // Filter
-    let fltr: React.MutableRefObject<Tone.Filter>;
-    if (props.filter) {
-        fltr = props.filter;
-        osc.chain(fltr.current); // for now call chain as filter is only chainable 'effect'
+    const fltr = props.filter.current;
+    if (props.showFilter) {
+        osc.chain(fltr); // for now call chain as filter is only chainable 'effect'
     }
 
     // LFO
-    let lfo: React.MutableRefObject<Tone.LFO>;
-    if (props.LFO) {
-        lfo = props.LFO;
-    }
+    const lfo = props.LFO.current;
 
     // useState to re-render some vars
-    const [oscFreqSlider, setOscFreqSlider] = useState<number>(
+    const [oscFreq, setOscFreq] = useState<number>(
         osc.frequency.value as number
     );
-    const [oscVolSlider, setOscVolSlider] = useState<number>(
-        osc.volume.value as number
-    );
+    const [oscVol, setOscVol] = useState<number>(osc.volume.value as number);
     const [partialsCount, setPartialsCount] = useState<number>(
         osc.partialCount
     );
+    const [partials, setPartials] = useState<Array<number>>([]);
 
-    const [attackSlider, setAttackSlider] = useState<number>(1.2);
-    const [decaySlider, setDecaySlider] = useState<number>(0.2);
-    const [sustainSlider, setSustainSlider] = useState<number>(0.3);
-    const [releaseSlider, setReleaseSlider] = useState<number>(2);
+    const [attack, setAttack] = useState<number>(0.2);
+    const [decay, setDecay] = useState<number>(0.5);
+    const [sustain, setSustain] = useState<number>(0.8);
+    const [release, setRelease] = useState<number>(1.0);
 
-    const [lfoFreqSlider, setLfoFreqSlider] = useState<number>(1);
-    const [filterFreqSlider, setFilterFreqSlider] = useState<number>(440);
+    const [lfoFreq, setLfoFreq] = useState<number>(1);
+    const [filterFreq, setFilterFreq] = useState<number>(440);
     // const [filterQSlider, setFilterQSlider] = useState<number>(40);
 
     const toggle = () => {
@@ -71,21 +81,21 @@ export function Controls(props: ControlsProps) {
         if (envOsc.state === "stopped") {
             envOsc.start();
         }
-        env.current.triggerAttack();
+        env.triggerAttack();
     };
 
     const triggerRelease = () => {
-        env.current.triggerRelease();
+        env.triggerRelease();
     };
 
     const changeOscFreq = (e: Event, value: number) => {
         osc.frequency.value = value;
-        setOscFreqSlider(value);
+        setOscFreq(value);
     };
 
     const changeOscVol = (e: Event, value: number) => {
         osc.volume.value = value;
-        setOscVolSlider(value);
+        setOscVol(value);
     };
 
     const changeOscType = (type: Tone.ToneOscillatorType) => {
@@ -95,30 +105,30 @@ export function Controls(props: ControlsProps) {
     };
 
     const changeFilterFreq = (e: Event, value: number) => {
-        fltr.current.frequency.value = value;
-        setFilterFreqSlider(value);
+        fltr.frequency.value = value;
+        setFilterFreq(value);
     };
 
     const changeAttack = (e: Event, value: number) => {
-        env.current.attack = value;
-        setAttackSlider(value);
+        env.attack = value;
+        setAttack(value);
     };
     const changeDecay = (e: Event, value: number) => {
-        env.current.decay = value;
-        setDecaySlider(value);
+        env.decay = value;
+        setDecay(value);
     };
     const changeSustain = (e: Event, value: number) => {
-        env.current.sustain = value;
-        setSustainSlider(value);
+        env.sustain = value;
+        setSustain(value);
     };
     const changeRelease = (e: Event, value: number) => {
-        env.current.release = value;
-        setReleaseSlider(value);
+        env.release = value;
+        setRelease(value);
     };
 
     const changeLfoFreq = (e: Event, value: number) => {
-        lfo.current.frequency.value = value;
-        setLfoFreqSlider(value);
+        lfo.frequency.value = value;
+        setLfoFreq(value);
     };
 
     // const updateFilterQ = (e: Event, value: number) => {
@@ -126,10 +136,42 @@ export function Controls(props: ControlsProps) {
     //     setFilterQSlider(value);
     // };
 
+    const getEven = (): number => {
+        const n = Math.floor(Math.random() * 20);
+        return n % 2 === 0 && n != 0 ? n : getEven();
+    };
+
+    const getOdd = (): number => {
+        const n = Math.floor(Math.random() * 20);
+        return n % 2 === 1 && n != 0 ? n : getOdd();
+    };
+
+    // when working, unite them
+    const addEvenPartial = () => {
+        if (osc.partialCount >= 0 && osc.partialCount < 32) {
+            const partialN = getEven();
+            osc.partials = [...partials, partialN];
+            setPartials([...partials, partialN]);
+            console.log(osc.partials, osc.partialCount);
+            // show even partials count
+        }
+    };
+
+    const addOddPartial = () => {
+        if (osc.partialCount >= 0 && osc.partialCount < 32) {
+            const partialN = getOdd();
+            setPartials([...partials, partialN]);
+            osc.partials = [...partials, partialN];
+            console.log(osc.partials, osc.partialCount);
+        }
+        // show odd partials count
+    };
+
     const addPartial = () => {
         if (osc.partialCount >= 0 && osc.partialCount < 32) {
             osc.partialCount++;
             setPartialsCount(osc.partialCount);
+            console.log(osc.partials, osc.partialCount);
         }
     };
 
@@ -137,12 +179,13 @@ export function Controls(props: ControlsProps) {
         if (osc.partialCount > 0) {
             osc.partialCount--;
             setPartialsCount(osc.partialCount);
+            console.log(osc.partials, osc.partialCount);
         }
     };
 
     return (
         <>
-            {props.envelope ? (
+            {props.showEnvelope ? (
                 <p>
                     <Button
                         variant="outlined"
@@ -171,7 +214,7 @@ export function Controls(props: ControlsProps) {
             {props.hideFrequency && (
                 <>
                     <span>
-                        <strong>Frequency</strong> {oscFreqSlider} Hz
+                        <strong>Frequency</strong> {oscFreq} Hz
                     </span>
 
                     <Slider
@@ -182,7 +225,7 @@ export function Controls(props: ControlsProps) {
                         onChange={(e, value) =>
                             changeOscFreq(e, value as number)
                         }
-                        value={oscFreqSlider}
+                        value={oscFreq}
                     />
                 </>
             )}
@@ -210,7 +253,7 @@ export function Controls(props: ControlsProps) {
             {props.showVolume && (
                 <>
                     <span>
-                        <strong>Amplitude</strong> {oscVolSlider} Hz
+                        <strong>Amplitude</strong> {oscVol} Hz
                     </span>
 
                     <Slider
@@ -221,7 +264,7 @@ export function Controls(props: ControlsProps) {
                         onChange={(e, value) =>
                             changeOscVol(e, value as number)
                         }
-                        value={oscVolSlider}
+                        value={oscVol}
                     />
                 </>
             )}
@@ -236,14 +279,21 @@ export function Controls(props: ControlsProps) {
                     <Button variant="outlined" onClick={addPartial}>
                         <AddIcon />
                     </Button>
+
+                    <Button variant="outlined" onClick={addEvenPartial}>
+                        even
+                    </Button>
+                    <Button variant="outlined" onClick={addOddPartial}>
+                        odd
+                    </Button>
                 </>
             )}
 
             {/* FILTER */}
-            {props.filter && (
+            {props.showFilter && (
                 <>
                     <p>
-                        <strong>Filter frequency</strong> {filterFreqSlider} Hz
+                        <strong>Filter frequency</strong> {filterFreq} Hz
                     </p>
                     <Slider
                         id="slider"
@@ -251,7 +301,7 @@ export function Controls(props: ControlsProps) {
                         min={0}
                         max={10000}
                         step={10}
-                        value={filterFreqSlider}
+                        value={filterFreq}
                         onChange={(e, value) =>
                             changeFilterFreq(e, value as number)
                         }
@@ -271,77 +321,83 @@ export function Controls(props: ControlsProps) {
             )}
 
             {/* ENVELOPE */}
-            {props.envelope && (
+            {props.showEnvelope && (
                 <>
+                    <ADSR
+                        attack={attackRef}
+                        decay={decayRef}
+                        sustain={sustainRef}
+                        release={releaseRef}
+                    />
                     <Stack
                         spacing={0}
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <span>Attack {attackSlider}</span>
+                        <span>Attack {attack}</span>
                         <Slider
                             size="small"
                             id="slider"
-                            min={0.05}
+                            min={0.01}
                             max={2}
-                            step={0.05}
+                            step={0.01}
                             onChange={(e, value) =>
                                 changeAttack(e, value as number)
                             }
-                            value={attackSlider}
+                            value={attack}
                         />
-                        <span>Decay {decaySlider}</span>
+                        <span>Decay {decay}</span>
                         <Slider
                             size="small"
                             id="slider"
-                            min={0.05}
+                            min={0.01}
                             max={2}
-                            step={0.05}
+                            step={0.01}
                             onChange={(e, value) =>
                                 changeDecay(e, value as number)
                             }
-                            value={decaySlider}
+                            value={decay}
                         />
-                        <span>Sustain {sustainSlider}</span>
+                        <span>Sustain {sustain}</span>
                         <Slider
                             size="small"
                             id="slider"
-                            min={0.05}
+                            min={0.01}
                             max={1}
-                            step={0.05}
+                            step={0.01}
                             onChange={(e, value) =>
                                 changeSustain(e, value as number)
                             }
-                            value={sustainSlider}
+                            value={sustain}
                         />
-                        <span>Release {releaseSlider}</span>
+                        <span>Release {release}</span>
                         <Slider
                             size="small"
                             id="slider"
-                            min={0.05}
-                            max={5}
-                            step={0.05}
+                            min={0.01}
+                            max={3}
+                            step={0.01}
                             onChange={(e, value) =>
                                 changeRelease(e, value as number)
                             }
-                            value={releaseSlider}
+                            value={release}
                         />
                     </Stack>
                 </>
             )}
 
             {/* LFO */}
-            {props.LFO && (
+            {props.showLFO && (
                 <>
                     <p>
-                        <strong>LFO frequency</strong> {lfoFreqSlider} Hz
+                        <strong>LFO frequency</strong> {lfoFreq} Hz
                     </p>
                     <Slider
                         id="slider"
                         size="small"
                         min={0.1}
                         max={10}
-                        value={lfoFreqSlider}
+                        value={lfoFreq}
                         onChange={(e, value) =>
                             changeLfoFreq(e, value as number)
                         }
