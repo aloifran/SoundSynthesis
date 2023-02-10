@@ -3,26 +3,15 @@ import { ReactP5Wrapper, Sketch } from "react-p5-wrapper";
 import { Container } from "@mui/material";
 
 interface ADSRProps {
-    // Refs to control values
-    // envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
-    attack: React.MutableRefObject<number>;
-    decay: React.MutableRefObject<number>;
-    sustain: React.MutableRefObject<number>;
-    release: React.MutableRefObject<number>;
+    // Ref to control values of envelope
+    envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
 }
 
 export function ADSR(props: ADSRProps) {
     // envelope control values
     let total;
     let current;
-    let env = {
-        attack: props.attack.current,
-        decay: props.decay.current,
-        sustain: props.sustain.current,
-        release: props.release.current,
-    };
-
-    console.log("env", env);
+    const env = props.envelope.current;
 
     const sketch: Sketch = (p) => {
         function drawArrowhead(
@@ -100,86 +89,69 @@ export function ADSR(props: ADSRProps) {
             p.stroke("lightgrey");
 
             // reset variables
-            total =
-                props.attack.current +
-                props.decay.current +
-                props.release.current;
+            total = env.attack + env.decay + env.release;
             current = 60;
 
             // Attack
-            p.line(60, 250, (props.attack.current / total) * 300 + current, 50);
+            p.line(60, 250, (env.attack / total) * 300 + current, 50);
             //TODO: save end positions, is there a better way?
-            let attackX = (props.attack.current / total) * 300 + current;
+            let attackX = (env.attack / total) * 300 + current;
             let attackY = 50;
-            current += (props.attack.current / total) * 300;
+            current += (env.attack / total) * 300;
 
             // Decay
             p.line(
                 attackX,
                 attackY,
-                (props.decay.current / total) * 300 + current,
-                250 - props.sustain.current * 200
+                (env.decay / total) * 300 + current,
+                250 - env.sustain * 200
             );
-            let decayX = (props.decay.current / total) * 300 + current;
-            let decayY = 250 - props.sustain.current * 200;
-            current += (props.decay.current / total) * 300;
+            let decayX = (env.decay / total) * 300 + current;
+            let decayY = 250 - env.sustain * 200;
+            current += (env.decay / total) * 300;
 
             // Sustain
-            p.line(
-                decayX,
-                decayY,
-                current + 100,
-                250 - props.sustain.current * 200
-            );
+            p.line(decayX, decayY, current + 100, 250 - env.sustain * 200);
             let sustX = current + 100;
-            let sustY = 250 - props.sustain.current * 200;
+            let sustY = 250 - env.sustain * 200;
             current += 100;
 
             // Release
-            p.line(
-                sustX,
-                sustY,
-                (props.release.current / total) * 300 + current,
-                250
-            );
-            current += (props.release.current / total) * 300;
+            p.line(sustX, sustY, (env.release / total) * 300 + current, 250);
+            current += (env.release / total) * 300;
 
             // Vertical separation lines
             // RELEASE
             p.strokeWeight(4);
 
-            if (props.release.current != 0) {
+            if (env.release != 0) {
                 // vertical release
                 p.stroke("purple");
                 p.line(current, 247, current, 25);
 
-                if (props.release.current / total > 0.1) {
+                if (env.release / total > 0.1) {
                     // horizontal release
-                    current -= (props.release.current / total) * 300;
+                    current -= (env.release / total) * 300;
                     p.line(current + 10, 30, current + 110, 30);
                     drawArrowhead(
-                        current + (props.release.current / total) * 300 - 4,
+                        current + (env.release / total) * 300 - 4,
                         30,
                         Math.PI / 2,
                         8
                     );
                 }
 
-                if (props.release.current / total > 0.16) {
+                if (env.release / total > 0.16) {
                     // R
                     p.strokeWeight(0);
                     p.textSize(20);
                     p.push();
                     p.textStyle("italic");
                     p.fill("purple");
-                    p.text(
-                        "R",
-                        current + (props.release.current / total) * 150 - 2,
-                        26
-                    );
+                    p.text("R", current + (env.release / total) * 150 - 2, 26);
                     p.pop();
                 } else {
-                    current -= (props.release.current / total) * 300;
+                    current -= (env.release / total) * 300;
                 }
             }
 
@@ -200,15 +172,15 @@ export function ADSR(props: ADSRProps) {
             p.strokeWeight(4);
             p.line(current, 250, current, 25);
 
-            if (props.sustain.current != 0) {
-                if (props.sustain.current > 0.1) {
+            if (env.sustain != 0) {
+                if (env.sustain > 0.1) {
                     // vertical sustain blue
                     p.stroke("blue");
                     p.line(
                         current - 50,
                         247,
                         current - 50,
-                        260 - props.sustain.current * 200
+                        260 - env.sustain * 200
                     );
                 }
 
@@ -216,52 +188,43 @@ export function ADSR(props: ADSRProps) {
                 current -= 100;
                 p.line(
                     current + 90,
-                    250 - props.sustain.current * 200,
+                    250 - env.sustain * 200,
                     current + 10,
-                    250 - props.sustain.current * 200
+                    250 - env.sustain * 200
                 );
-                if (props.sustain.current > 0.1) {
-                    drawArrowhead(
-                        current + 50,
-                        254 - props.sustain.current * 200,
-                        0,
-                        8
-                    );
+                if (env.sustain > 0.1) {
+                    drawArrowhead(current + 50, 254 - env.sustain * 200, 0, 8);
                     // S
                     p.strokeWeight(0);
                     p.textSize(20);
                     p.push();
                     p.textStyle("italic");
                     p.fill("blue");
-                    p.text(
-                        "S",
-                        current + 40,
-                        264 - props.sustain.current * 100
-                    );
+                    p.text("S", current + 40, 264 - env.sustain * 100);
                     p.pop();
                 } else {
                     current -= 100;
                 }
 
                 // DECAY LINES
-                if (props.decay.current != 0) {
+                if (env.decay != 0) {
                     // vertical decay
                     p.stroke("#f60");
                     p.strokeWeight(4);
                     p.line(current, 247, current, 25);
 
-                    if (props.decay.current / total > 0.1) {
+                    if (env.decay / total > 0.1) {
                         // horizontal decay
-                        current -= (props.decay.current / total) * 300;
+                        current -= (env.decay / total) * 300;
                         p.line(current + 70, 30, current + 10, 30);
                         drawArrowhead(
-                            current + (props.decay.current / total) * 300 - 4,
+                            current + (env.decay / total) * 300 - 4,
                             30,
                             Math.PI / 2,
                             8
                         );
 
-                        if (props.decay.current / total > 0.16) {
+                        if (env.decay / total > 0.16) {
                             // D
                             p.strokeWeight(0);
                             p.push();
@@ -269,37 +232,35 @@ export function ADSR(props: ADSRProps) {
                             p.textStyle("italic");
                             p.text(
                                 "D",
-                                current +
-                                    (props.decay.current / total) * 150 -
-                                    2,
+                                current + (env.decay / total) * 150 - 2,
                                 26
                             );
                             p.pop();
                         }
                     } else {
-                        current -= (props.decay.current / total) * 300;
+                        current -= (env.decay / total) * 300;
                     }
                 }
 
                 // ATTACK LINES
-                if (props.attack.current != 0) {
+                if (env.attack != 0) {
                     // vertical attack
                     p.stroke("green");
                     p.strokeWeight(4);
                     p.line(current, 247, current, 25);
 
-                    if (props.attack.current / total > 0.1) {
+                    if (env.attack / total > 0.1) {
                         // horizontal attack
-                        current -= (props.attack.current / total) * 300;
+                        current -= (env.attack / total) * 300;
                         p.line(current + 70, 30, current + 10, 30);
                         drawArrowhead(
-                            current + (props.attack.current / total) * 300 - 4,
+                            current + (env.attack / total) * 300 - 4,
                             30,
                             Math.PI / 2,
                             8
                         );
 
-                        if (props.attack.current / total > 0.16) {
+                        if (env.attack / total > 0.16) {
                             // A
                             p.strokeWeight(0);
                             p.push();
@@ -307,15 +268,13 @@ export function ADSR(props: ADSRProps) {
                             p.textStyle("italic");
                             p.text(
                                 "A",
-                                current +
-                                    (props.attack.current / total) * 150 -
-                                    2,
+                                current + (env.attack / total) * 150 - 2,
                                 26
                             );
                             p.pop();
                         }
                     } else {
-                        current -= (props.attack.current / total) * 300;
+                        current -= (env.attack / total) * 300;
                     }
                 }
             }

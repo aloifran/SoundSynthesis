@@ -7,21 +7,10 @@ import { ADSR } from "../ADSR/ADSR";
 
 interface ControlsProps {
     // Refs to control values
-
-    //! optional props should be only booleans, to show/hide stuff, the rest should be always passed to avoid problems
-    // these props from Player should be sent here to show/hide the controls
-    // showLFO?: boolean;
-    // showEnvelope?: boolean;
-    // showPartials?: boolean;
-    // showVolume?: boolean;
-    // showTypes?: boolean;
-    // hideFrequency?: boolean;
-
     oscillator: React.MutableRefObject<Tone.Oscillator>;
     filter: React.MutableRefObject<Tone.Filter>;
     envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
     LFO: React.MutableRefObject<Tone.LFO>;
-
     showPartials?: boolean;
     showVolume?: boolean;
     showFilter?: boolean;
@@ -36,8 +25,10 @@ export function Controls(props: ControlsProps) {
     const osc = props.oscillator.current.toDestination();
 
     // Envelope (has its own oscillator)
-    const env = props.envelope.current.toDestination();
+    const envV = props.envelope.current;
+    const env = envV.toDestination();
     const envOsc = new Tone.Oscillator(100, "square10").connect(env);
+    const envRef = useRef<Tone.AmplitudeEnvelope>(envV);
 
     //TODO: FIX refs to pass to ADSR live graph
     const attackRef = useRef<number>(+env.attack);
@@ -323,12 +314,7 @@ export function Controls(props: ControlsProps) {
             {/* ENVELOPE */}
             {props.showEnvelope && (
                 <>
-                    <ADSR
-                        attack={attackRef}
-                        decay={decayRef}
-                        sustain={sustainRef}
-                        release={releaseRef}
-                    />
+                    <ADSR envelope={envRef} />
                     <Stack
                         spacing={0}
                         alignItems="center"
