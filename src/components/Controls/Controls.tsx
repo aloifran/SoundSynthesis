@@ -25,16 +25,9 @@ export function Controls(props: ControlsProps) {
     const osc = props.oscillator.current.toDestination();
 
     // Envelope (has its own oscillator)
-    const envV = props.envelope.current;
-    const env = envV.toDestination();
+    const env = props.envelope.current.toDestination();
     const envOsc = new Tone.Oscillator(100, "square10").connect(env);
-    const envRef = useRef<Tone.AmplitudeEnvelope>(envV);
-
-    //TODO: FIX refs to pass to ADSR live graph
-    const attackRef = useRef<number>(+env.attack);
-    const decayRef = useRef<number>(+env.decay);
-    const sustainRef = useRef<number>(+env.sustain);
-    const releaseRef = useRef<number>(+env.release);
+    const envRef = useRef<Tone.AmplitudeEnvelope>(env);
 
     // Filter
     const fltr = props.filter.current;
@@ -55,10 +48,10 @@ export function Controls(props: ControlsProps) {
     );
     const [partials, setPartials] = useState<Array<number>>([]);
 
-    const [attack, setAttack] = useState<number>(0.2);
-    const [decay, setDecay] = useState<number>(0.5);
-    const [sustain, setSustain] = useState<number>(0.8);
-    const [release, setRelease] = useState<number>(1.0);
+    const [attack, setAttack] = useState<number>(env.attack as number);
+    const [decay, setDecay] = useState<number>(env.decay as number);
+    const [sustain, setSustain] = useState<number>(env.sustain as number);
+    const [release, setRelease] = useState<number>(env.release as number);
 
     const [lfoFreq, setLfoFreq] = useState<number>(1);
     const [filterFreq, setFilterFreq] = useState<number>(440);

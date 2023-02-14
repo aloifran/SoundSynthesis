@@ -42,6 +42,25 @@ export function Visualizer(props: VisualizerProps) {
             const dim = Math.min(p5.width, p5.height);
             p5.background(25, 45, 72);
             p5.strokeWeight(dim * 0.01);
+
+            //TODO: implement color for each waveform type, when oscillator playground is ready
+            // switch (props.waveform) {
+            //     case "sine":
+            //         p5.stroke("red");
+            //         break;
+            //     case "sawtooth":
+            //         p5.stroke("yellow");
+            //         break;
+            //     case "triangle":
+            //         p5.stroke("green");
+            //         break;
+            //     case "square":
+            //         p5.stroke("blue");
+            //         break;
+            //     default:
+            //         p5.stroke(213, 232, 253);
+            // }
+
             p5.stroke(213, 232, 253);
             p5.noFill();
             const values = analyser.getValue();

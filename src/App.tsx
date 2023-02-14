@@ -209,31 +209,34 @@ function App() {
                     <h2>Envelope</h2>
                 </HashLink>
                 <Container className="text">
-                    <p>Envelopes control how sounds change over time.</p>
+                    <p>
+                        Envelopes control how sounds change over time. <br />
+                        <strong>Envelope generators</strong> allow users to
+                        control the different stages of a sound.
+                    </p>
                     <p>
                         The most common type of envelope generator has four
-                        stages: <strong>A</strong>ttack, <strong>D</strong>ecay,{" "}
-                        <strong>S</strong>ustain, and <strong>R</strong>elease.
+                        stages:
                     </p>
+                    <h4>Attack</h4>
                     <p>
-                        <strong>Attack</strong> is the time taken for initial
-                        run-up of level from nil to peak, beginning when the key
-                        is pressed.
+                        The time taken for initial run-up of level from nil to
+                        peak, beginning when the key is pressed.
                     </p>
+                    <h4>Decay</h4>
                     <p>
-                        <strong>Decay</strong> is the time taken for the
-                        subsequent run down from the attack level to the
-                        designated sustain level.
+                        The time taken for the subsequent run down from the
+                        attack level to the designated sustain level.
                     </p>
+                    <h4>Sustain</h4>
                     <p>
-                        <strong>Sustain</strong> is the level during the main
-                        sequence of the sound's duration, until the key is
-                        released.
+                        The level during the main sequence of the sound's
+                        duration, until the key is released.
                     </p>
+                    <h4>Release</h4>
                     <p>
-                        <strong>Release</strong> is the time taken for the level
-                        to decay from the sustain level to zero after the key is
-                        released
+                        The time taken for the level to decay from the sustain
+                        level to zero after the key is released
                     </p>
                     <Link
                         className="link-small"

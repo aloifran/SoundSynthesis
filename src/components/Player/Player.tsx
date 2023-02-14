@@ -37,10 +37,10 @@ export function Player(props: PlayerProps) {
 
     // Envelope
     const env = new Tone.AmplitudeEnvelope({
-        attack: 1.0,
+        attack: 0.7,
         decay: 0.5,
         sustain: 0.5,
-        release: 1,
+        release: 1.5,
     });
     const envRef = useRef<Tone.AmplitudeEnvelope>(env);
 
