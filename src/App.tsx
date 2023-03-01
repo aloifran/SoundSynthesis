@@ -1,11 +1,11 @@
 import "./App.css";
+import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import { Player } from "./components/Player/Player";
 import { Mute } from "./components/Mute/Mute";
 import { Container, Divider, List, ListItem } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 
 function App() {
     return (

@@ -6,7 +6,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { ADSR } from "../ADSR/ADSR";
 
 interface ControlsProps {
-    // Refs to control values
     oscillator: React.MutableRefObject<Tone.Oscillator>;
     filter: React.MutableRefObject<Tone.Filter>;
     envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
@@ -46,13 +45,10 @@ export function Controls(props: ControlsProps) {
     const [partialsCount, setPartialsCount] = useState<number>(
         osc.partialCount
     );
-    const [partials, setPartials] = useState<Array<number>>([]);
-
     const [attack, setAttack] = useState<number>(env.attack as number);
     const [decay, setDecay] = useState<number>(env.decay as number);
     const [sustain, setSustain] = useState<number>(env.sustain as number);
     const [release, setRelease] = useState<number>(env.release as number);
-
     const [lfoFreq, setLfoFreq] = useState<number>(1);
     const [filterFreq, setFilterFreq] = useState<number>(440);
     // const [filterQSlider, setFilterQSlider] = useState<number>(40);
@@ -119,37 +115,6 @@ export function Controls(props: ControlsProps) {
     //     filt.current.Q.value = value;
     //     setFilterQSlider(value);
     // };
-
-    const getEven = (): number => {
-        const n = Math.floor(Math.random() * 20);
-        return n % 2 === 0 && n != 0 ? n : getEven();
-    };
-
-    const getOdd = (): number => {
-        const n = Math.floor(Math.random() * 20);
-        return n % 2 === 1 && n != 0 ? n : getOdd();
-    };
-
-    // when working, unite them
-    const addEvenPartial = () => {
-        if (osc.partialCount >= 0 && osc.partialCount < 32) {
-            const partialN = getEven();
-            osc.partials = [...partials, partialN];
-            setPartials([...partials, partialN]);
-            console.log(osc.partials, osc.partialCount);
-            // show even partials count
-        }
-    };
-
-    const addOddPartial = () => {
-        if (osc.partialCount >= 0 && osc.partialCount < 32) {
-            const partialN = getOdd();
-            setPartials([...partials, partialN]);
-            osc.partials = [...partials, partialN];
-            console.log(osc.partials, osc.partialCount);
-        }
-        // show odd partials count
-    };
 
     const addPartial = () => {
         if (osc.partialCount >= 0 && osc.partialCount < 32) {
@@ -262,13 +227,6 @@ export function Controls(props: ControlsProps) {
                     </Button>
                     <Button variant="outlined" onClick={addPartial}>
                         <AddIcon />
-                    </Button>
-
-                    <Button variant="outlined" onClick={addEvenPartial}>
-                        even
-                    </Button>
-                    <Button variant="outlined" onClick={addOddPartial}>
-                        odd
                     </Button>
                 </>
             )}

@@ -3,7 +3,6 @@ import { ReactP5Wrapper, Sketch } from "react-p5-wrapper";
 import { Container } from "@mui/material";
 
 interface ADSRProps {
-    // Ref to control envelope values
     envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
 }
 

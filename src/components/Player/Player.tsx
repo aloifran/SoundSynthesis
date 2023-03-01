@@ -4,8 +4,6 @@ import { Container } from "@mui/material";
 import { Controls } from "../Controls/Controls";
 import { Visualizer } from "../Visualizer/Visualizer";
 
-//* This comp creates the source and visualizer
-
 interface PlayerProps {
     oscillatorType?: Tone.ToneOscillatorType;
     showFilter?: boolean;
@@ -31,7 +29,7 @@ export function Player(props: PlayerProps) {
     const filtRef = useRef<Tone.Filter>(filt);
 
     // LFO
-    //! define what the LFO affects at the moment of initialization or later? to set the min/max values according to the source affected
+    // define what the LFO affects at the moment of initialization or later? to set the min/max values according to the source affected
     const lfo = new Tone.LFO(1, 0, 100);
     const lfoRef = useRef<Tone.LFO>(lfo);
 
