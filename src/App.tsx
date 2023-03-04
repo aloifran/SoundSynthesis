@@ -1,4 +1,3 @@
-import "./App.css";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Player } from "./components/Player/Player";
@@ -15,24 +14,31 @@ function App() {
                 <ArrowUpwardIcon />
             </HashLink>
             <nav>
-                <h1>What's Sound Synthesis?</h1>
+                <h1>What is Sound Synthesis?</h1>
                 <p>
-                    It's the process of generating sound using electronic
-                    instruments called synthesizers.{" "}
-                    <Link
+                    It is the process of generating, shaping and manipulating
+                    sound using electronic instruments called synthesizers.
+                    <br />
+                    Synthesizers produce an analog or digital representation of
+                    sound, which the user may design.
+                    {/* <Link
                         className="link-small"
                         target="_blank"
                         to="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Introduction"
                     >
                         Read more
-                    </Link>
+                    </Link> */}
                 </p>
-                <p>The following topics are covered in this site:</p>
 
                 <List sx={{ display: "flex" }}>
                     <ListItem id="li">
                         <HashLink smooth to={"/#oscillator"}>
                             Oscillator
+                        </HashLink>
+                    </ListItem>
+                    <ListItem id="li">
+                        <HashLink smooth to={"/#waveforms"}>
+                            Waveforms
                         </HashLink>
                     </ListItem>
                     <ListItem id="li">
@@ -77,10 +83,7 @@ function App() {
                         electrical signal by rapidly changing voltages in a
                         circuit. Those "oscillations" repeat at recurring
                         intervals and generate a <strong>waveform</strong>.
-                    </p>
-                    <p>
-                        A waveform is a visual representation of a continuous
-                        tone.{" "}
+                        <br />
                         <Link
                             className="link-small"
                             target="_blank"
@@ -89,27 +92,52 @@ function App() {
                             Read more
                         </Link>
                     </p>
-                    <h4>Type of waveforms:</h4>
                 </Container>
+            </Container>
 
-                <h3>Sine</h3>
+            <Divider id="divider" />
+
+            <Container id="waveforms">
+                <HashLink smooth to={"/#waveforms"}>
+                    <h2>Waveforms</h2>
+                </HashLink>
+
                 <Container className="text">
                     <p>
+                        A waveform is a visual representation of a continuous
+                        tone.
+                    </p>
+
+                    <h3>Sine</h3>
+                    {/* <p>
                         The sine wave can be considered the fundamental building
                         block of sound. Represents the pure tone of a single
                         frequency, which is called the fundamental.
-                    </p>
+                        <br />
+                        All other sounds are composed of sine waves that occur
+                        simultaneously at multiple frequencies, various
+                        amplitudes and phases.
+                    </p> */}
+                    <Player oscillatorType="sine" />
                 </Container>
-                <Player oscillatorType="sine" />
 
-                <h3>Sawtooth</h3>
-                <Player oscillatorType="sawtooth" />
+                <Container className="text">
+                    <h3>Sawtooth</h3>
+                    {/* <p>The sawtooth wave </p> */}
+                    <Player oscillatorType="sawtooth" />
+                </Container>
 
-                <h3>Triangle</h3>
-                <Player oscillatorType="triangle" />
+                <Container className="text">
+                    <h3>Triangle</h3>
+                    {/* <p>The triangle wave </p> */}
+                    <Player oscillatorType="triangle" />
+                </Container>
 
-                <h3>Square</h3>
-                <Player oscillatorType="square" />
+                <Container className="text">
+                    <h3>Square</h3>
+                    {/* <p>The square wave </p> */}
+                    <Player oscillatorType="square" />
+                </Container>
             </Container>
 
             <Divider id="divider" />
@@ -118,8 +146,10 @@ function App() {
                 <HashLink smooth to={"/#amplitude"}>
                     <h2>Amplitude</h2>
                 </HashLink>
-                <p>It's the volume</p>
-                <Player showVolume />
+                <Container className="text">
+                    <p>It's the volume, or the strength of the waveform.</p>
+                    <Player showVolume />
+                </Container>
             </Container>
 
             <Divider id="divider" />
@@ -132,19 +162,17 @@ function App() {
                     <p>
                         Harmonics are vibrations that make soundwaves different
                         from one another. The timbre of a tone.
-                    </p>
-                    <p>
+                        <br />
                         These vibrations are quieter than the original sound
                         (the fundamental frequency) and always in the shape of
                         sine waves, no matter the waveform that produced the
                         sound.
-                    </p>
-                    <p>
+                        <br />
                         Changing the amount or volume of harmonics will change
                         the timbre of the sound.
                     </p>
+                    <Player showPartials showTypes />
                 </Container>
-                <Player showPartials showTypes />
             </Container>
 
             <Divider id="divider" />
@@ -245,9 +273,8 @@ function App() {
                     >
                         Read more
                     </Link>
+                    <Player showEnvelope hideFrequency />
                 </Container>
-
-                <Player showEnvelope hideFrequency />
             </Container>
 
             <Divider id="divider" />

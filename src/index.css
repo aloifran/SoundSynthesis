@@ -1,55 +1,64 @@
 :root {
-    font-family: Roboto, "Open Sans", "Helvetica Neue", sans-serif;
-    line-height: 24px;
-    font-weight: 400;
+    font-family: "Exo", sans-serif;
+    line-height: 160%;
 
     color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
-    background-color: #252525;
+    background-color: #101010;
+}
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+p {
+    font-family: sans-serif;
 }
 
 h1 {
-    font-size: 3em;
+    font-weight: 200;
+    font-size: 3.3em;
     line-height: 1.1;
 }
 
 h2 {
-    font-size: 2.2em;
+    font-weight: 200;
+    font-size: 2.4em;
     line-height: 1.1;
 }
 
 h3 {
-    font-size: 1.6em;
+    font-weight: 400;
+    font-size: 1.8em;
     line-height: 1.1;
-    color: #fa9900;
+    color: #f57c00;
 }
 
 h4 {
-    font-size: 1.2em;
+    font-weight: 400;
+    font-size: 1.4em;
     line-height: 1.1;
 }
 
 a {
-    color: #646cff;
+    color: #1976d2;
+
     text-decoration: inherit;
 }
 a:hover {
-    color: #535bf2;
+    color: #0f68c2;
 }
 
 .link-small {
     font-weight: 300;
-    color: #f57c00;
+    color: #ce741b;
     text-decoration: inherit;
 }
 .link-small:hover {
-    color: #cf6801;
+    color: #b76412;
 }
 
 body {
@@ -119,7 +128,7 @@ img {
 
 #divider-top {
     margin-bottom: 2.5em;
-    border-color: #cf6801c0;
+    border-color: #cf6801;
 }
 
 #li {
