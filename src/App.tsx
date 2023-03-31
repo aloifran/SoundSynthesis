@@ -1,10 +1,11 @@
+import { Container, Divider } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import { Player } from "./components/Player/Player";
-import { Mute } from "./components/Mute/Mute";
-import { Container, Divider, List, ListItem } from "@mui/material";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import GitHubIcon from "@mui/icons-material/GitHub";
+import { Header } from "./components/Header";
+import { Player } from "./components/Player";
+import { Mute } from "./components/Mute";
+import { Footer } from "./components/Footer";
 
 function App() {
     return (
@@ -13,61 +14,8 @@ function App() {
             <HashLink id="arrowTop" smooth to={"/#top"}>
                 <ArrowUpwardIcon />
             </HashLink>
-            <nav>
-                <h1>What is Sound Synthesis?</h1>
-                <p>
-                    It is the process of generating, shaping and manipulating
-                    sound using electronic instruments called synthesizers.
-                    <br />
-                    Synthesizers produce an analog or digital representation of
-                    sound, which the user may design.
-                    {/* <Link
-                        className="link-small"
-                        target="_blank"
-                        to="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Introduction"
-                    >
-                        Read more
-                    </Link> */}
-                </p>
 
-                <List sx={{ display: "flex" }}>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#oscillator"}>
-                            Oscillator
-                        </HashLink>
-                    </ListItem>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#waveforms"}>
-                            Waveforms
-                        </HashLink>
-                    </ListItem>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#amplitude"}>
-                            Amplitude
-                        </HashLink>
-                    </ListItem>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#harmonics"}>
-                            Harmonics
-                        </HashLink>
-                    </ListItem>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#filter"}>
-                            Filter
-                        </HashLink>
-                    </ListItem>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#envelope"}>
-                            Envelope
-                        </HashLink>
-                    </ListItem>
-                    <ListItem id="li">
-                        <HashLink smooth to={"/#lfo"}>
-                            LFO
-                        </HashLink>
-                    </ListItem>
-                </List>
-            </nav>
+            <Header />
 
             <Divider id="divider-top" />
 
@@ -241,31 +189,35 @@ function App() {
                         Envelopes control how sounds change over time. <br />
                         <strong>Envelope generators</strong> allow users to
                         control the different stages of a sound.
-                    </p>
-                    <p>
+                        <br />
                         The most common type of envelope generator has four
                         stages:
                     </p>
-                    <h4>Attack</h4>
-                    <p>
+
+                    <h4>Attack </h4>
+                    <span>
                         The time taken for initial run-up of level from nil to
                         peak, beginning when the key is pressed.
-                    </p>
-                    <h4>Decay</h4>
-                    <p>
+                    </span>
+
+                    <h5>Decay </h5>
+                    <span>
                         The time taken for the subsequent run down from the
                         attack level to the designated sustain level.
-                    </p>
-                    <h4>Sustain</h4>
-                    <p>
+                    </span>
+
+                    <h5>Sustain</h5>
+                    <span>
                         The level during the main sequence of the sound's
                         duration, until the key is released.
-                    </p>
-                    <h4>Release</h4>
-                    <p>
+                    </span>
+
+                    <h5>Release</h5>
+                    <span>
                         The time taken for the level to decay from the sustain
                         level to zero after the key is released
-                    </p>
+                    </span>
+                    <br />
                     <Link
                         className="link-small"
                         target="_blank"
@@ -301,17 +253,7 @@ function App() {
             </Container>
 
             <Divider id="divider" />
-            <Container fixed id="footer">
-                <p>
-                    2023 Francisco Aloi Deheza{" "}
-                    <Link
-                        target="_blank"
-                        to="https://github.com/aloifran/SoundSynthesis"
-                    >
-                        <GitHubIcon />
-                    </Link>
-                </p>
-            </Container>
+            <Footer />
         </>
     );
 }
