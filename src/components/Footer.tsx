@@ -5,15 +5,16 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 export function Footer() {
     return (
         <Container fixed id="footer">
-            <p>
-                2023 Francisco Aloi
+            <div>2023 Francisco Aloi</div>
+            <div>
                 <Link
+                    className="icon"
                     target="_blank"
                     to="https://github.com/aloifran/SoundSynthesis"
                 >
                     <GitHubIcon />
                 </Link>
-            </p>
+            </div>
         </Container>
     );
 }
