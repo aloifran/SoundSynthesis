@@ -1,7 +1,7 @@
+import { useState } from "react";
+import * as Tone from "tone";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import * as Tone from "tone";
-import { useState } from "react";
 
 export function Mute() {
     const [isMuted, setIsMuted] = useState<boolean>(false);

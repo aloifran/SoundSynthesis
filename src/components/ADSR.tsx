@@ -6,8 +6,9 @@ interface ADSRProps {
     envelope: React.MutableRefObject<Tone.AmplitudeEnvelope>;
 }
 
-export function ADSR(props: ADSRProps) {
-    const env = props.envelope.current;
+export function ADSR({ envelope }: ADSRProps) {
+    const env = envelope.current;
+
     let total: number;
     let current: number;
     let attack: number = env.attack as number;

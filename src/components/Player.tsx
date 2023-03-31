@@ -1,8 +1,8 @@
-import * as Tone from "tone";
 import { useRef } from "react";
+import * as Tone from "tone";
 import { Container } from "@mui/material";
-import { Controls } from "../Controls/Controls";
-import { Visualizer } from "../Visualizer/Visualizer";
+import { Controls } from "./Controls";
+import { Visualizer } from "./Visualizer";
 
 interface PlayerProps {
     oscillatorType?: Tone.ToneOscillatorType;

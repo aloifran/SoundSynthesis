@@ -11,32 +11,32 @@ interface VisualizerProps {
     adsr?: boolean;
 }
 
-export function Visualizer(props: VisualizerProps) {
+export function Visualizer({
+    oscillator,
+    envelope,
+    waveform,
+    adsr,
+}: VisualizerProps) {
     let source: Tone.Oscillator | Tone.AmplitudeEnvelope;
     let analyser: Tone.Analyser;
 
-    // P5 wrapper
     const sketch: Sketch = (p5) => {
-        // P5 canvas setup
         p5.setup = () => {
-            // size equal to the example image
             p5.createCanvas(492, 333);
 
-            // Create an analyser node that makes a waveform and connect to source to get data
             // FFT or Waveform
-            if (props.adsr) {
+            if (adsr) {
                 analyser = new Tone.Analyser("fft", 4096);
-                source = props.envelope.current;
+                source = envelope.current;
             } else {
                 analyser = new Tone.Analyser("waveform", 128);
-                source = props.oscillator.current;
+                source = oscillator.current;
             }
             source.connect(analyser);
         };
 
-        // P5 canvas loop
+        // Canvas loop
         p5.draw = () => {
-            // Ensure everything is loaded
             if (!source || !analyser) return;
 
             const dim = Math.min(p5.width, p5.height);
@@ -72,7 +72,7 @@ export function Visualizer(props: VisualizerProps) {
                 let y = 0;
 
                 // FFT
-                if (props.adsr) {
+                if (adsr) {
                     const offset = p5.map(amplitude, -100, 0, 0, 1);
                     y = p5.height - offset * p5.height;
                 }
@@ -88,7 +88,7 @@ export function Visualizer(props: VisualizerProps) {
 
     return (
         <Container id="visualizer-img-container">
-            {props.waveform && <img src={props.waveform + ".jpg"} />}
+            {waveform && <img src={waveform + ".jpg"} />}
             <ReactP5Wrapper sketch={sketch} />
         </Container>
     );

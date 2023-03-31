@@ -1,9 +1,9 @@
-import * as Tone from "tone";
 import { useState, useRef } from "react";
+import * as Tone from "tone";
 import { Slider, Switch, Button, ButtonGroup, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { ADSR } from "../ADSR/ADSR";
+import { ADSR } from "./ADSR";
 
 interface ControlsProps {
     oscillator: React.MutableRefObject<Tone.Oscillator>;
@@ -51,7 +51,6 @@ export function Controls(props: ControlsProps) {
     const [release, setRelease] = useState<number>(env.release as number);
     const [lfoFreq, setLfoFreq] = useState<number>(1);
     const [filterFreq, setFilterFreq] = useState<number>(440);
-    // const [filterQSlider, setFilterQSlider] = useState<number>(40);
 
     const toggle = () => {
         osc.state === "stopped" ? osc.start() : osc.stop();
@@ -110,11 +109,6 @@ export function Controls(props: ControlsProps) {
         lfo.frequency.value = value;
         setLfoFreq(value);
     };
-
-    // const updateFilterQ = (e: Event, value: number) => {
-    //     filt.current.Q.value = value;
-    //     setFilterQSlider(value);
-    // };
 
     const addPartial = () => {
         if (osc.partialCount >= 0 && osc.partialCount < 32) {
@@ -248,17 +242,6 @@ export function Controls(props: ControlsProps) {
                             changeFilterFreq(e, value as number)
                         }
                     />
-                    {/* <p>Filter Quality: {filterQSlider} Hz</p>
-                    <Slider
-                        id="slider"
-                        size="small"
-                        min={0}
-                        max={100}
-                        value={filterQSlider}
-                        onChange={(e, value) =>
-                            updateFilterQ(e, value as number)
-                        }
-                    /> */}
                 </>
             )}
 
