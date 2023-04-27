@@ -229,7 +229,7 @@ function App() {
         <>
             <Mute />
             <HashLink id="arrowTop" smooth to={"/#top"}>
-                <ArrowUpwardIcon />
+                <ArrowUpwardIcon fontSize="large" />
             </HashLink>
 
             <Header />

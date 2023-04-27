@@ -14,9 +14,9 @@ export function Mute() {
     return (
         <div id="mute">
             {isMuted ? (
-                <VolumeOffIcon onClick={toggleSound} />
+                <VolumeOffIcon onClick={toggleSound} fontSize="large" />
             ) : (
-                <VolumeUpIcon onClick={toggleSound} />
+                <VolumeUpIcon onClick={toggleSound} fontSize="large" />
             )}
         </div>
     );

@@ -1,15 +1,17 @@
-$primary-color: #1976d2
-$primary-color-hover: #0f68c2
+$bg-dark: #15161a
+$primary-color: #1785f3
+$primary-color-hover: #1785f3e7
 $secondary-color: #f57c00
 $secondary-color-hover: #d66e05
-$bg-light: rgba(255,255,255,0.85)
-$bg-dark: #15161a
+$icon-color: #ffffffc7
+$icon-color-hover: #92bbe4d7
+$text: rgba(255,255,255,0.85)
 
 :root 
     font-family: "Exo", sans-serif
     line-height: 160%
     color-scheme: light dark
-    color: $bg-light
+    color: $text
     background-color: $bg-dark
 
 #root 
@@ -95,7 +97,7 @@ img
     color: $secondary-color-hover
 
 .icon
-    color: $bg-light
+    color: $text
 
 
 // MUI class customization
@@ -109,13 +111,17 @@ img
     position: fixed
     right: 0.5em
     bottom: 0.5em
-    color: $bg-light
+    color: $icon-color
 
 #mute 
     position: fixed
     right: 0.5em
     top: 0.5em
     cursor: pointer
+    color: $icon-color
+
+#arrowTop:hover, #mute:hover
+    color: $icon-color-hover
 
 #slider 
     width: 60%
@@ -133,6 +139,7 @@ img
 
 #li 
     justify-content: center
+    font-size: 1.1em
 
 #footer 
     display: flex
