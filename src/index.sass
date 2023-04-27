@@ -1,0 +1,152 @@
+$primary-color: #1976d2
+$primary-color-hover: #0f68c2
+$secondary-color: #f57c00
+$secondary-color-hover: #d66e05
+$bg-light: rgba(255,255,255,0.85)
+$bg-dark: #15161a
+
+:root 
+    font-family: "Exo", sans-serif
+    line-height: 160%
+    color-scheme: light dark
+    color: $bg-light
+    background-color: $bg-dark
+
+#root 
+    text-align: center
+    margin: 0 auto
+    padding: 2rem
+    max-width: 1280px
+
+// Tags
+
+body
+    display: flex
+    place-items: center
+    margin: 0
+    min-width: 320px
+    min-height: 100vh
+
+h1 
+    font-weight: 200
+    font-size: 3.3em
+    line-height: 1.1
+
+h2 
+    font-weight: 200
+    font-size: 2.4em
+    line-height: 1.1
+
+h3 
+    font-weight: 400
+    font-size: 1.8em
+    line-height: 1.1
+    color: $secondary-color
+
+h4 
+    font-weight: 400
+    font-size: 1.4em
+    line-height: 1.1
+
+h5 
+    font-weight: 400
+    font-size: 1.2em
+    line-height: 1.1
+    display: inline
+
+a
+    color: $primary-color
+    text-decoration: inherit
+
+a:hover
+    color: $primary-color-hover
+
+button 
+    border-radius: 8px
+    border: 1px solid transparent
+    padding: 0.6em 1.2em
+    font-size: 1em
+    font-weight: 500
+    font-family: inherit
+    background-color: #1a1a1a
+    cursor: pointer
+    transition: border-color 0.25s
+
+button:hover 
+    border-color: #646cff
+
+canvas 
+    border: 4px solid black
+    box-shadow: 0 0 12px black
+
+img
+    border: 4px solid black
+    box-shadow: 0 0 12px black
+    width: 100%
+
+//  Classes
+
+.link-small 
+    font-weight: 300
+    color: $secondary-color
+    text-decoration: inherit
+
+.link-small:hover 
+    color: $secondary-color-hover
+
+.icon
+    color: $bg-light
+
+
+// MUI class customization
+.css-1oqqzyl-MuiContainer-root.text 
+    padding-bottom: 0.5em
+    width: 70%
+
+// Ids
+
+#arrowTop 
+    position: fixed
+    right: 0.5em
+    bottom: 0.5em
+    color: $bg-light
+
+#mute 
+    position: fixed
+    right: 0.5em
+    top: 0.5em
+    cursor: pointer
+
+#slider 
+    width: 60%
+    padding: 6px 0
+    margin: 0 12px
+
+#divider 
+    margin-bottom: 2.5em
+    margin-top: 2.5em
+    border-color: $secondary-color
+
+#divider-top 
+    margin-bottom: 2.5em
+    border-color: $secondary-color
+
+#li 
+    justify-content: center
+
+#footer 
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 10px
+    color: grey
+
+#visualizer-img-container 
+    display: flex
+    justify-content: center
+    align-items: baseline
+
+@media (max-width: 1000px) 
+    #visualizer-img-container 
+        flex-wrap: wrap
+    
