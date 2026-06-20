@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useEffect } from "react";
 import * as Tone from "tone";
 import { Container } from "@mui/material";
 import { Controls } from "./Controls";
 import { Visualizer } from "./Visualizer";
+import { useConstant } from "../hooks";
 
 interface PlayerProps {
     oscillatorType?: Tone.ToneOscillatorType;
@@ -17,30 +18,46 @@ interface PlayerProps {
 }
 
 export function Player(props: PlayerProps) {
-    Tone.Destination.volume.value = -10;
-
     // Oscillator
-    const osc = new Tone.Oscillator(376, props.oscillatorType);
-    osc.volume.value = -12;
-    const oscRef = useRef<Tone.Oscillator>(osc);
+    const oscRef = useConstant(() => {
+        const osc = new Tone.Oscillator(376, props.oscillatorType);
+        osc.volume.value = -12;
+        return osc;
+    });
 
     // Filter
-    const filt = new Tone.Filter(500, props.filterType, -96);
-    const filtRef = useRef<Tone.Filter>(filt);
+    const filtRef = useConstant(
+        () => new Tone.Filter(500, props.filterType, -96)
+    );
 
     // LFO
     // define what the LFO affects at the moment of initialization or later? to set the min/max values according to the source affected
-    const lfo = new Tone.LFO(1, 0, 100);
-    const lfoRef = useRef<Tone.LFO>(lfo);
+    const lfoRef = useConstant(() => new Tone.LFO(1, 0, 100));
 
     // Envelope
-    const env = new Tone.AmplitudeEnvelope({
-        attack: 0.7,
-        decay: 0.5,
-        sustain: 0.5,
-        release: 1.5,
-    });
-    const envRef = useRef<Tone.AmplitudeEnvelope>(env);
+    const envRef = useConstant(
+        () =>
+            new Tone.AmplitudeEnvelope({
+                attack: 0.7,
+                decay: 0.5,
+                sustain: 0.5,
+                release: 1.5,
+            })
+    );
+
+    useEffect(() => {
+        // Master output level (global; set once on mount).
+        Tone.Destination.volume.value = -10;
+
+        // Release the audio nodes when the Player unmounts.
+        return () => {
+            oscRef.current.dispose();
+            filtRef.current.dispose();
+            lfoRef.current.dispose();
+            envRef.current.dispose();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

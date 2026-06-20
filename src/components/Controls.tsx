@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import * as Tone from "tone";
 import { Slider, Switch, Button, ButtonGroup, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { ADSR } from "./ADSR";
+import { useConstant } from "../hooks";
 
 interface ControlsProps {
     oscillator: React.MutableRefObject<Tone.Oscillator>;
@@ -20,22 +21,29 @@ interface ControlsProps {
 }
 
 export function Controls(props: ControlsProps) {
-    // Oscillator
-    const osc = props.oscillator.current.toDestination();
-
-    // Envelope (has its own oscillator)
-    const env = props.envelope.current.toDestination();
-    const envOsc = new Tone.Oscillator(100, "square10").connect(env);
-    const envRef = useRef<Tone.AmplitudeEnvelope>(env);
-
-    // Filter
+    const osc = props.oscillator.current;
+    const env = props.envelope.current;
     const fltr = props.filter.current;
-    if (props.showFilter) {
-        osc.chain(fltr); // for now call chain as filter is only chainable 'effect'
-    }
-
-    // LFO
     const lfo = props.LFO.current;
+
+    // The envelope is driven by its own dedicated oscillator
+    const envOscRef = useConstant(() => new Tone.Oscillator(100, "square10"));
+    const envOsc = envOscRef.current;
+
+    // Wire the audio graph once on mount
+    useEffect(() => {
+        osc.toDestination();
+        env.toDestination();
+        envOsc.connect(env);
+        if (props.showFilter) {
+            osc.chain(fltr); // filter is the only chainable 'effect' for now
+        }
+
+        return () => {
+            envOsc.dispose();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // useState to re-render some vars
     const [oscFreq, setOscFreq] = useState<number>(
@@ -52,11 +60,13 @@ export function Controls(props: ControlsProps) {
     const [lfoFreq, setLfoFreq] = useState<number>(1);
     const [filterFreq, setFilterFreq] = useState<number>(440);
 
-    const toggle = () => {
+    const toggle = async () => {
+        await Tone.start();
         osc.state === "stopped" ? osc.start() : osc.stop();
     };
 
-    const triggerAttack = () => {
+    const triggerAttack = async () => {
+        await Tone.start();
         if (envOsc.state === "stopped") {
             envOsc.start();
         }
@@ -248,7 +258,7 @@ export function Controls(props: ControlsProps) {
             {/* ENVELOPE */}
             {props.showEnvelope && (
                 <>
-                    <ADSR envelope={envRef} />
+                    <ADSR envelope={props.envelope} />
                     <Stack
                         spacing={0}
                         alignItems="center"
