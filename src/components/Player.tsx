@@ -79,7 +79,7 @@ export function Player(props: PlayerProps) {
                     showPartials={props.showPartials || false}
                     showVolume={props.showVolume || false}
                     showTypes={props.showTypes || false}
-                    hideFrequency={props.hideFrequency ? false : true}
+                    showFrequency={!props.hideFrequency}
                 />
             </Container>
         </>

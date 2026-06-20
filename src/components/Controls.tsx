@@ -17,7 +17,7 @@ interface ControlsProps {
     showEnvelope?: boolean;
     showLFO?: boolean;
     showTypes?: boolean;
-    hideFrequency?: boolean;
+    showFrequency?: boolean;
 }
 
 export function Controls(props: ControlsProps) {
@@ -164,7 +164,7 @@ export function Controls(props: ControlsProps) {
             )}
 
             {/* OSCILLATOR */}
-            {props.hideFrequency && (
+            {props.showFrequency && (
                 <>
                     <span>
                         <strong>Frequency</strong> {oscFreq} Hz
